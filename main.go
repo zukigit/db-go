@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"zuki/main/zkdb"
+	"zuki/main/dbutil"
 )
 
 func main() {
 	fmt.Println("This is main")
-	zkdb.Test()
+	dbutil.DBconnect()
 }

@@ -1,19 +1,9 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/zukigit/db-go/dbutil"
 	mysql "github.com/zukigit/db-go/dbutil_mysql"
 )
 
 func main() {
-	fmt.Println("This is main")
-
-	dbsource := dbutil.DBsource{
-		DBusername: "root",
-		DBpasswd:   "zabbix",
-		DBname:     "golearn",
-	}
-	mysql.DBconnect(dbsource)
+	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", "")) //only the first three params are mandatory field. you can leave blank for optinal fields.
 }

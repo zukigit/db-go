@@ -6,21 +6,12 @@ import (
 	"github.com/zukigit/db-go/dbutil"
 )
 
-func chckDBsource(dbsource dbutil.DBsource) dbutil.DBsource {
-	dbsource.DBtype = "mysql"
-	//check for port and db host
-	if dbsource.DBport == "" {
-		dbsource.DBport = "3306"
-	}
-	if dbsource.DBhost == "" {
-		dbsource.DBhost = "localhost"
-	}
-
-	return dbsource
+func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) dbutil.DBsource {
+	return dbutil.ChckDBsource(dbutil.GetDBsource(DBusername, DBpasswd, DBname, DBhost, DBport), dbutil.MYSQL)
 }
 
 func DBconnect(dbsource dbutil.DBsource) {
-	err := dbutil.DBconnect(chckDBsource(dbsource))
+	err := dbutil.DBconnect(dbsource)
 	if err != nil {
 		fmt.Println(err)
 	} else {

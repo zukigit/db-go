@@ -8,13 +8,41 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	MYSQL      = "mysql"
+	POSTGRESQL = "postgres"
+)
+
 type DBsource struct {
 	DBusername string //mandatory
 	DBpasswd   string //mandatory
 	DBname     string //mandatory
 	DBhost     string //optional
-	DBtype     string //no need
 	DBport     string //optional
+	DBtype     string //no need
+}
+
+func ChckDBsource(dbsource DBsource, dbType string) DBsource {
+	dbsource.DBtype = dbType
+	//check for port and db host
+	if dbsource.DBport == "" {
+		dbsource.DBport = "3306"
+	}
+	if dbsource.DBhost == "" {
+		dbsource.DBhost = "localhost"
+	}
+
+	return dbsource
+}
+
+func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) DBsource {
+	return DBsource{
+		DBusername: DBusername,
+		DBpasswd:   DBpasswd,
+		DBname:     DBname,
+		DBhost:     DBhost,
+		DBport:     DBport,
+	}
 }
 
 func DBconnect(dbsource DBsource) error {

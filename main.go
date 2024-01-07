@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"zuki/main/dbutil"
-	mysql "zuki/main/dbutil_mysql"
+
+	"github.com/zukigit/db-go/dbutil"
+	mysql "github.com/zukigit/db-go/dbutil_mysql"
 )
 
 func main() {
@@ -13,7 +14,6 @@ func main() {
 		DBusername: "root",
 		DBpasswd:   "zabbix",
 		DBname:     "golearn",
-		DBhost:     "moon",
 	}
 	mysql.DBconnect(dbsource)
 }

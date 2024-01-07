@@ -2,7 +2,8 @@ package dbutilmysql
 
 import (
 	"fmt"
-	"zuki/main/dbutil"
+
+	"github.com/zukigit/db-go/dbutil"
 )
 
 func chckDBsource(dbsource dbutil.DBsource) dbutil.DBsource {

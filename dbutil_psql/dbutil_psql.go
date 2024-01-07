@@ -2,7 +2,8 @@ package dbutilpsql
 
 import (
 	"fmt"
-	"zuki/main/dbutil"
+
+	"github.com/zukigit/db-go/dbutil"
 )
 
 func DBconnect(dbsource dbutil.DBsource) {

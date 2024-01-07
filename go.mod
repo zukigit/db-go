@@ -1,4 +1,4 @@
-module zuki/main
+module github.com/zukigit/db-go
 
 go 1.21.5
 

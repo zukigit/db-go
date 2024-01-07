@@ -9,12 +9,12 @@ import (
 )
 
 type DBsource struct {
-	DBusername string
-	DBpasswd   string
-	DBname     string
-	DBhost     string
-	DBtype     string
-	DBport     string
+	DBusername string //mandatory
+	DBpasswd   string //mandatory
+	DBname     string //mandatory
+	DBhost     string //optional
+	DBtype     string //no need
+	DBport     string //optional
 }
 
 func DBconnect(dbsource DBsource) error {

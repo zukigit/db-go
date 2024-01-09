@@ -60,7 +60,7 @@ func DBconnect(dbsource DBsource) error {
 
 	pingErr := db.Ping()
 	if pingErr != nil {
-		fmt.Println("Can not connect to the databse, Error msg: " + pingErr.Error())
+		fmt.Println("Can not connect to the databse. Host: "+ dbsource.DBhost +", Error msg: " + pingErr.Error())
 		db.Close()
 		return errors.New(pingErr.Error())
 	}

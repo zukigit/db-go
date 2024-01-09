@@ -25,8 +25,11 @@ type DBsource struct {
 func ChckDBsource(dbsource DBsource, dbType string) DBsource {
 	dbsource.DBtype = dbType
 	//check for port and db host
-	if dbsource.DBport == "" {
+	if dbsource.DBport == "" && dbType == MYSQL {
 		dbsource.DBport = "3306"
+	}
+	if dbsource.DBport == "" && dbType == POSTGRESQL {
+		dbsource.DBport = "5432"
 	}
 	if dbsource.DBhost == "" {
 		dbsource.DBhost = "localhost"
@@ -60,7 +63,7 @@ func DBconnect(dbsource DBsource) error {
 
 	pingErr := db.Ping()
 	if pingErr != nil {
-		fmt.Println("Can not connect to the databse. Host: "+ dbsource.DBhost +", Error msg: " + pingErr.Error())
+		fmt.Println("Can not connect to the databse. Host: " + dbsource.DBhost + ", Error msg: " + pingErr.Error())
 		db.Close()
 		return errors.New(pingErr.Error())
 	}

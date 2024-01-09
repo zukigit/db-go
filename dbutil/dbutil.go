@@ -54,14 +54,17 @@ func DBconnect(dbsource DBsource) error {
 
 	db, err = sql.Open(dbsource.DBtype, dataSourceName)
 	if err != nil {
+		fmt.Println("Db source is invalid, Error msg: " + err.Error())
 		return errors.New(err.Error())
 	}
 
 	pingErr := db.Ping()
 	if pingErr != nil {
+		fmt.Println("Can not connect to the databse, Error msg: " + pingErr.Error())
 		db.Close()
 		return errors.New(pingErr.Error())
 	}
 
+	fmt.Println("Connecte to the db host: " + dbsource.DBhost)
 	return nil
 }

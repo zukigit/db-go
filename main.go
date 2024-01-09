@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", ""))
+	mysql.DBconnect(mysql.GetDBsource("zabbix", "zabbix", "zabbix", "192.168.238.128", ""))
 }

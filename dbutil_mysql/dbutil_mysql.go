@@ -1,8 +1,6 @@
 package dbutilmysql
 
 import (
-	"fmt"
-
 	"github.com/zukigit/db-go/dbutil"
 )
 
@@ -14,12 +12,5 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 }
 
 func DBconnect(dbsource dbutil.DBsource) error{
-	err := dbutil.DBconnect(dbsource)
-	if err != nil {
-		fmt.Println(err)
-		return err
-	} else {
-		fmt.Println("connected")
-		return nil
-	}
+	return dbutil.DBconnect(dbsource)
 }

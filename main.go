@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", "")) //only the first three params are mandatory field. you can leave blank for optinal fields.
+	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", ""))
 }

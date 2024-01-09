@@ -11,6 +11,10 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 	return dbutil.ChckDBsource(dbutil.GetDBsource(DBusername, DBpasswd, DBname, DBhost, DBport), dbutil.MYSQL)
 }
 
-func DBconnect(dbsource dbutil.DBsource) error{
+func DBconnect(dbsource dbutil.DBsource) error {
 	return dbutil.DBconnect(dbsource)
+}
+
+func DBselect(query string) error {
+	return dbutil.DBselect(query)
 }

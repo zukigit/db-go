@@ -13,6 +13,8 @@ const (
 	POSTGRESQL = "postgres"
 )
 
+var db *sql.DB
+
 type DBsource struct {
 	DBusername string //mandatory
 	DBpasswd   string //mandatory
@@ -49,7 +51,6 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 }
 
 func DBconnect(dbsource DBsource) error {
-	var db *sql.DB
 	var err error
 
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
@@ -68,6 +69,19 @@ func DBconnect(dbsource DBsource) error {
 		return errors.New(pingErr.Error())
 	}
 
-	fmt.Println("Connecte to the db host: " + dbsource.DBhost)
+	fmt.Println("Connected to the db host: " + dbsource.DBhost)
+	return nil
+}
+
+func DBselect(query string) error {
+	rows, err := db.Query(query)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	columns, err := rows.Columns()
+
+	fmt.Println("ROWS:", columns[1])
 	return nil
 }

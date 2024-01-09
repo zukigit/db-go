@@ -6,4 +6,5 @@ import (
 
 func main() {
 	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", ""))
+	mysql.DBselect(" select * from album a")
 }

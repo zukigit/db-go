@@ -6,5 +6,5 @@ import (
 
 func main() {
 	mysql.DBconnect(mysql.GetDBsource("zabbix", "zabbix", "zabbix", "192.168.238.128", ""))
-	mysql.DBselect("name: %s", "zuki")
+	mysql.DBselect("select * from hosts")
 }

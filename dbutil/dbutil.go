@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -75,6 +76,8 @@ func DBconnect(dbsource DBsource) error {
 
 func DBselect(unfmt string, arg ...any) error {
 	query := fmt.Sprintf(unfmt, arg...)
+	row_values := make([]map[string]interface{}, 0)
+
 	rows, err := db.Query(query)
 	if err != nil {
 		return err
@@ -82,7 +85,38 @@ func DBselect(unfmt string, arg ...any) error {
 	defer rows.Close()
 
 	columns, err := rows.Columns()
+	if err != nil {
+		return err
+	}
 
-	fmt.Println("ROWS:", columns[1])
+	for rows.Next() {
+		raw_col_values := make([]interface{}, len(columns))
+		col_values := make(map[string]interface{}, len(columns))
+
+		//preassign empty values in order to compatible with Scan()'s parameter
+		for i:= range raw_col_values {
+			var temp_value interface{}
+			raw_col_values[i] = &temp_value
+		}
+
+		err := rows.Scan(raw_col_values...)
+		if err != nil {
+			return err
+		}
+
+		for i, column := range columns {
+			// value := reflect.Indirect(reflect.ValueOf(values[i])).Interface()
+			value := reflect.Indirect(reflect.ValueOf(raw_col_values[i])).Interface()
+			fmt.Println(value)
+			col_values[column] = value
+		}
+
+		row_values = append(row_values, col_values)
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
 	return nil
 }

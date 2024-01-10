@@ -73,7 +73,8 @@ func DBconnect(dbsource DBsource) error {
 	return nil
 }
 
-func DBselect(query string) error {
+func DBselect(unfmt string, arg ...any) error {
+	query := fmt.Sprintf(unfmt, arg...)
 	rows, err := db.Query(query)
 	if err != nil {
 		return err

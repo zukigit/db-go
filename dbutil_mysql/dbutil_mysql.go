@@ -15,6 +15,6 @@ func DBconnect(dbsource dbutil.DBsource) error {
 	return dbutil.DBconnect(dbsource)
 }
 
-func DBselect(query string) error {
-	return dbutil.DBselect(query)
+func DBselect(fmt string, arg ...any) error {
+	return dbutil.DBselect(fmt, arg...)
 }

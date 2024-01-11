@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,16 +12,6 @@ import (
 const (
 	MYSQL      = "mysql"
 	POSTGRESQL = "postgres"
-)
-
-const (
-	VARCHAR  = "VARCHAR"
-	TEXT     = "TEXT"
-	NVARCHAR = "NVARCHAR"
-	DECIMAL  = "DECIMAL"
-	BOOL     = "BOOL"
-	INT      = "INT"
-	BIGINT   = "BIGINT"
 )
 
 var db *sql.DB
@@ -84,7 +75,6 @@ func DBconnect(dbsource DBsource) error {
 }
 
 func DBselect(unfmt string, arg ...any) error {
-	columns_count := 0
 	query := fmt.Sprintf(unfmt, arg...)
 	rows, err := db.Query(query)
 	if err != nil {
@@ -92,53 +82,34 @@ func DBselect(unfmt string, arg ...any) error {
 	}
 	defer rows.Close()
 
-	col_types, err := rows.ColumnTypes()
+	columns, err := rows.Columns()
 	if err != nil {
 		return err
 	}
-	columns_count = len(col_types)
 
 	for rows.Next() {
-		columns_values := make([]interface{}, columns_count)
+		col_values := make([]interface{}, len(columns))
 
-		for i := range columns_values {
-			var temp_value interface{}
-			switch col_types[i].DatabaseTypeName() {
-			case VARCHAR:
-			case TEXT:
-			case NVARCHAR:
-				temp_value = new(string)
-			case DECIMAL:
-			case INT:
-			case BIGINT:
-				temp_value = new(int)
-			case BOOL:
-				temp_value = new(bool)
-			}
-			columns_values[i] = &temp_value
+		//preassign empty values in order to compatible with Scan()'s parameter
+		for i := range col_values {
+			var temp_value string
+			col_values[i] = &temp_value
 		}
-		err := rows.Scan(columns_values...)
+
+		err := rows.Scan(col_values...)
 		if err != nil {
-			fmt.Println("error at scanning", err)
 			return err
 		}
-		for i, colValue := range columns_values {
-			switch v := colValue.(type) {
-			case *string:
-				// Handle string value
-				fmt.Printf("Column %d: %s\n", i, *v)
-			case *int:
-				// Handle int value
-				fmt.Printf("Column %d: %d\n", i, *v)
-			case *bool:
-				// Handle bool value
-				fmt.Printf("Column %d: %t\n", i, *v)
-			// Add cases for other types as needed
-			default:
-				fmt.Println("type:", v)
-				fmt.Printf("Column %d: Unexpected type\n", i)
-			}
+
+		for i := range columns {
+			// value := reflect.Indirect(reflect.ValueOf(values[i])).Interface()
+			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
+			fmt.Println(col_values[i])
 		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
 	}
 
 	return nil

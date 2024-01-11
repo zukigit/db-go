@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -12,6 +11,16 @@ import (
 const (
 	MYSQL      = "mysql"
 	POSTGRESQL = "postgres"
+)
+
+const (
+	VARCHAR  = "VARCHAR"
+	TEXT     = "TEXT"
+	NVARCHAR = "NVARCHAR"
+	DECIMAL  = "DECIMAL"
+	BOOL     = "BOOL"
+	INT      = "INT"
+	BIGINT   = "BIGINT"
 )
 
 var db *sql.DB
@@ -75,6 +84,7 @@ func DBconnect(dbsource DBsource) error {
 }
 
 func DBselect(unfmt string, arg ...any) error {
+	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 	rows, err := db.Query(query)
 	if err != nil {
@@ -82,7 +92,7 @@ func DBselect(unfmt string, arg ...any) error {
 	}
 	defer rows.Close()
 
-	columns, err := rows.Columns()
+	columns, err := rows.ColumnTypes()
 	if err != nil {
 		return err
 	}
@@ -92,25 +102,28 @@ func DBselect(unfmt string, arg ...any) error {
 
 		//preassign empty values in order to compatible with Scan()'s parameter
 		for i := range col_values {
-			var temp_value string
-			col_values[i] = &temp_value
+			switch columns[i].DatabaseTypeName() {
+			case VARCHAR, NVARCHAR, TEXT:
+				var temp_value string
+				col_values[i] = &temp_value
+			case INT, BIGINT:
+				var temp_value int64
+				col_values[i] = &temp_value
+			case DECIMAL:
+				var temp_value float32
+				col_values[i] = &temp_value
+			case BOOL:
+				var temp_value bool
+				col_values[i] = &temp_value
+			}
 		}
 
 		err := rows.Scan(col_values...)
 		if err != nil {
+			fmt.Println("rows scan error ", err)
 			return err
 		}
-
-		for i := range columns {
-			// value := reflect.Indirect(reflect.ValueOf(values[i])).Interface()
-			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
-			fmt.Println(col_values[i])
-		}
+		row_values = append(row_values, col_values)
 	}
-
-	if err := rows.Err(); err != nil {
-		return err
-	}
-
 	return nil
 }

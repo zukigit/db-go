@@ -34,13 +34,12 @@ type DBsource struct {
 	DBtype     string //no need
 }
 
-func ChckDBsource(dbsource DBsource, dbType string) DBsource {
-	dbsource.DBtype = dbType
+func ChckDBsource(dbsource DBsource) DBsource {
 	//check for port and db host
-	if dbsource.DBport == "" && dbType == MYSQL {
+	if dbsource.DBport == "" && dbsource.DBtype == MYSQL {
 		dbsource.DBport = "3306"
 	}
-	if dbsource.DBport == "" && dbType == POSTGRESQL {
+	if dbsource.DBport == "" && dbsource.DBtype == POSTGRESQL {
 		dbsource.DBport = "5432"
 	}
 	if dbsource.DBhost == "" {
@@ -50,13 +49,14 @@ func ChckDBsource(dbsource DBsource, dbType string) DBsource {
 	return dbsource
 }
 
-func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) DBsource {
+func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DBsource {
 	return DBsource{
 		DBusername: DBusername,
 		DBpasswd:   DBpasswd,
 		DBname:     DBname,
 		DBhost:     DBhost,
 		DBport:     DBport,
+		DBtype:     DBtype,
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -83,24 +84,24 @@ func DBconnect(dbsource DBsource) error {
 	return nil
 }
 
-func DBselect(unfmt string, arg ...any) error {
+func DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 	rows, err := db.Query(query)
 	if err != nil {
-		return err
+		return row_values, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.ColumnTypes()
 	if err != nil {
-		return err
+		return row_values, err
 	}
 
 	for rows.Next() {
 		col_values := make([]interface{}, len(columns))
 
-		//preassign empty values in order to compatible with Scan()'s parameter
+		//defines col_values' types
 		for i := range col_values {
 			switch columns[i].DatabaseTypeName() {
 			case VARCHAR, NVARCHAR, TEXT:
@@ -121,9 +122,15 @@ func DBselect(unfmt string, arg ...any) error {
 		err := rows.Scan(col_values...)
 		if err != nil {
 			fmt.Println("rows scan error ", err)
-			return err
+			return row_values, err
 		}
+
+		//parses to readable data types from interface
+		for i := range col_values {
+			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
+		}
+
 		row_values = append(row_values, col_values)
 	}
-	return nil
+	return row_values, nil
 }

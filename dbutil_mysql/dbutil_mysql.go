@@ -15,6 +15,6 @@ func DBconnect(dbsource dbutil.DBsource) error {
 	return dbutil.DBconnect(dbsource)
 }
 
-func DBselect(fmt string, arg ...any) error {
+func DBselect(fmt string, arg ...any) ([][]interface{}, error) {
 	return dbutil.DBselect(fmt, arg...)
 }

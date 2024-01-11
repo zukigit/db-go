@@ -63,7 +63,6 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 
 func DBconnect(dbsource DBsource) error {
 	var err error
-
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbsource.DBusername, dbsource.DBpasswd, dbsource.DBhost, dbsource.DBport, dbsource.DBname)
 
@@ -87,6 +86,7 @@ func DBconnect(dbsource DBsource) error {
 func DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
+
 	rows, err := db.Query(query)
 	if err != nil {
 		return row_values, err

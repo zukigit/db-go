@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 
-	mysql "github.com/zukigit/db-go/dbutil_mysql"
+	db_util "github.com/zukigit/db-go/dbutil_high"
 )
 
 func main() {
-	mysql.DBconnect(mysql.GetDBsource("root", "zabbix", "golearn", "", ""))
-	rows, _ := mysql.DBselect("select * from album a where a.title = '%s'", "Blue Train")
+	db := db_util.GetDBsource_MYSQL("root", "zabbix", "golearn", "", "")
+	db.DBconnect()
+	rows, _ := db.DBselect("select * from album a where a.title = '%s'", "Blue Train")
 
 	for _, value := range rows {
 		fmt.Println(value)

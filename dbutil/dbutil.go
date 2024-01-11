@@ -2,7 +2,6 @@ package dbutil
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"reflect"
 
@@ -61,7 +60,7 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 	}
 }
 
-func DBconnect(dbsource DBsource) error {
+func (dbsource *DBsource) DBconnect() error {
 	var err error
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbsource.DBusername, dbsource.DBpasswd, dbsource.DBhost, dbsource.DBport, dbsource.DBname)
@@ -69,21 +68,21 @@ func DBconnect(dbsource DBsource) error {
 	db, err = sql.Open(dbsource.DBtype, dataSourceName)
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())
-		return errors.New(err.Error())
+		return err
 	}
 
 	pingErr := db.Ping()
 	if pingErr != nil {
 		fmt.Println("Can not connect to the databse. Host: " + dbsource.DBhost + ", Error msg: " + pingErr.Error())
 		db.Close()
-		return errors.New(pingErr.Error())
+		return pingErr
 	}
 
 	fmt.Println("Connected to the db host: " + dbsource.DBhost)
 	return nil
 }
 
-func DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+func (dbsource *DBsource) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 

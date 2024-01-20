@@ -32,7 +32,7 @@ type DBsource struct {
 	dbHost     string //optional
 	dbPort     string //optional
 	dbType     string //no need
-	DB         *sql.DB
+	db         *sql.DB
 }
 
 func ChckDBsource(dbsource DBsource) DBsource {
@@ -66,16 +66,16 @@ func (dbsource *DBsource) DBconnect() error {
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbsource.dbUsername, dbsource.dbPasswd, dbsource.dbHost, dbsource.dbPort, dbsource.dbName)
 
-	dbsource.DB, err = sql.Open(dbsource.dbType, dataSourceName)
+	dbsource.db, err = sql.Open(dbsource.dbType, dataSourceName)
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())
 		return err
 	}
 
-	pingErr := dbsource.DB.Ping()
+	pingErr := dbsource.db.Ping()
 	if pingErr != nil {
 		fmt.Println("Can not connect to the databse. Host: " + dbsource.dbHost + ", Error msg: " + pingErr.Error())
-		dbsource.DB.Close()
+		dbsource.db.Close()
 		return pingErr
 	}
 
@@ -87,7 +87,7 @@ func (dbsource *DBsource) DBselect(unfmt string, arg ...any) ([][]interface{}, e
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 
-	rows, err := dbsource.DB.Query(query)
+	rows, err := dbsource.db.Query(query)
 	if err != nil {
 		return row_values, err
 	}

@@ -26,13 +26,13 @@ const (
 var db *sql.DB
 
 type DBsource struct {
-	dbUsername string //mandatory
-	dbPasswd   string //mandatory
-	dbName     string //mandatory
-	dbHost     string //optional
-	dbPort     string //optional
-	dbType     string //no need
-	db         *sql.DB
+	dbUsername string  //mandatory
+	dbPasswd   string  //mandatory
+	dbName     string  //mandatory
+	dbHost     string  //optional
+	dbPort     string  //optional
+	dbType     string  //no need
+	db         *sql.DB //no need
 }
 
 func ChckDBsource(dbsource DBsource) DBsource {

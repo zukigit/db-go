@@ -26,24 +26,25 @@ const (
 var db *sql.DB
 
 type DBsource struct {
-	DBusername string //mandatory
-	DBpasswd   string //mandatory
-	DBname     string //mandatory
-	DBhost     string //optional
-	DBport     string //optional
-	DBtype     string //no need
+	dbUsername string //mandatory
+	dbPasswd   string //mandatory
+	dbName     string //mandatory
+	dbHost     string //optional
+	dbPort     string //optional
+	dbType     string //no need
+	DB         *sql.DB
 }
 
 func ChckDBsource(dbsource DBsource) DBsource {
 	//check for port and db host
-	if dbsource.DBport == "" && dbsource.DBtype == MYSQL {
-		dbsource.DBport = "3306"
+	if dbsource.dbPort == "" && dbsource.dbType == MYSQL {
+		dbsource.dbPort = "3306"
 	}
-	if dbsource.DBport == "" && dbsource.DBtype == POSTGRESQL {
-		dbsource.DBport = "5432"
+	if dbsource.dbPort == "" && dbsource.dbType == POSTGRESQL {
+		dbsource.dbPort = "5432"
 	}
-	if dbsource.DBhost == "" {
-		dbsource.DBhost = "localhost"
+	if dbsource.dbHost == "" {
+		dbsource.dbHost = "localhost"
 	}
 
 	return dbsource
@@ -51,34 +52,34 @@ func ChckDBsource(dbsource DBsource) DBsource {
 
 func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DBsource {
 	return DBsource{
-		DBusername: DBusername,
-		DBpasswd:   DBpasswd,
-		DBname:     DBname,
-		DBhost:     DBhost,
-		DBport:     DBport,
-		DBtype:     DBtype,
+		dbUsername: DBusername,
+		dbPasswd:   DBpasswd,
+		dbName:     DBname,
+		dbHost:     DBhost,
+		dbPort:     DBport,
+		dbType:     DBtype,
 	}
 }
 
 func (dbsource *DBsource) DBconnect() error {
 	var err error
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		dbsource.DBusername, dbsource.DBpasswd, dbsource.DBhost, dbsource.DBport, dbsource.DBname)
+		dbsource.dbUsername, dbsource.dbPasswd, dbsource.dbHost, dbsource.dbPort, dbsource.dbName)
 
-	db, err = sql.Open(dbsource.DBtype, dataSourceName)
+	dbsource.DB, err = sql.Open(dbsource.dbType, dataSourceName)
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())
 		return err
 	}
 
-	pingErr := db.Ping()
+	pingErr := dbsource.DB.Ping()
 	if pingErr != nil {
-		fmt.Println("Can not connect to the databse. Host: " + dbsource.DBhost + ", Error msg: " + pingErr.Error())
-		db.Close()
+		fmt.Println("Can not connect to the databse. Host: " + dbsource.dbHost + ", Error msg: " + pingErr.Error())
+		dbsource.DB.Close()
 		return pingErr
 	}
 
-	fmt.Println("Connected to the db host: " + dbsource.DBhost)
+	fmt.Println("Connected to the db host: " + dbsource.dbHost)
 	return nil
 }
 
@@ -86,7 +87,7 @@ func (dbsource *DBsource) DBselect(unfmt string, arg ...any) ([][]interface{}, e
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 
-	rows, err := db.Query(query)
+	rows, err := dbsource.DB.Query(query)
 	if err != nil {
 		return row_values, err
 	}

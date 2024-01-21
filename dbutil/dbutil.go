@@ -25,7 +25,7 @@ const (
 
 var db *sql.DB
 
-type DBsource struct {
+type DButil struct {
 	dbUsername string  //mandatory
 	dbPasswd   string  //mandatory
 	dbName     string  //mandatory
@@ -35,7 +35,7 @@ type DBsource struct {
 	db         *sql.DB //no need
 }
 
-func ChckDBsource(dbsource DBsource) DBsource {
+func ChckDBsource(dbsource DButil) DButil {
 	//check for port and db host
 	if dbsource.dbPort == "" && dbsource.dbType == MYSQL {
 		dbsource.dbPort = "3306"
@@ -50,8 +50,8 @@ func ChckDBsource(dbsource DBsource) DBsource {
 	return dbsource
 }
 
-func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DBsource {
-	return DBsource{
+func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DButil {
+	return DButil{
 		dbUsername: DBusername,
 		dbPasswd:   DBpasswd,
 		dbName:     DBname,
@@ -61,7 +61,7 @@ func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost strin
 	}
 }
 
-func (dbsource *DBsource) DBconnect() error {
+func (dbsource *DButil) DBconnect() error {
 	var err error
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbsource.dbUsername, dbsource.dbPasswd, dbsource.dbHost, dbsource.dbPort, dbsource.dbName)
@@ -83,7 +83,7 @@ func (dbsource *DBsource) DBconnect() error {
 	return nil
 }
 
-func (dbsource *DBsource) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+func (dbsource *DButil) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 	query := fmt.Sprintf(unfmt, arg...)
 

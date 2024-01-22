@@ -8,13 +8,11 @@ type Psql struct {
 	DButil *dbutil.DButil
 }
 
-func GetInstance_PSQL() *Psql {
-	return &Psql{}
-}
-
-func (psql *Psql) GetUtilInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) {
-	DBtype := "postgres"
-	psql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
+func GetInstance_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Psql {
+	DBtype := "mysql"
+	return &Psql{
+		DButil: dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype),
+	}
 }
 
 func (psql *Psql) DBconnect() error {

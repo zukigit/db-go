@@ -1,6 +1,8 @@
 package dbutil_high
 
 import (
+	"fmt"
+
 	"github.com/zukigit/db-go/dbutil"
 )
 
@@ -8,19 +10,18 @@ type Mysql struct {
 	DButil *dbutil.DButil
 }
 
-func GetInstance_MYSQL() *Mysql {
-	return &Mysql{}
-}
-
-func (mysql *Mysql) GetUtilInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) {
+func GetInstance_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Mysql {
 	DBtype := "mysql"
-	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
+	return &Mysql{
+		DButil: dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype),
+	}
 }
 
 func (mysql *Mysql) DBconnect() error {
-	return nil
+	return mysql.DButil.DBconnect()
 }
 
 func (mysql *Mysql) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
-	return nil, nil
+	query := fmt.Sprintf(unfmt, arg...)
+	return mysql.DButil.DBselect(query)
 }

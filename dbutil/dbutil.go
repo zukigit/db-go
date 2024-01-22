@@ -66,9 +66,8 @@ func (dbsource *DButil) DBconnect() error {
 	return nil
 }
 
-func (dbsource *DButil) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+func (dbsource *DButil) DBselect(query string) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
-	query := fmt.Sprintf(unfmt, arg...)
 
 	rows, err := dbsource.db.Query(query)
 	if err != nil {

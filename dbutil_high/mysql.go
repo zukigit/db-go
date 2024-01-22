@@ -12,6 +12,14 @@ type Mysql struct {
 
 func GetInstance_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Mysql {
 	DBtype := "mysql"
+
+	if DBhost == "" {
+		DBhost = "localhost"
+	}
+
+	if DBport == "" {
+		DBport = "3306"
+	}
 	return &Mysql{
 		DButil: dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype),
 	}

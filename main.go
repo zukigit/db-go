@@ -1,9 +1,17 @@
 package main
 
-import "github.com/zukigit/db-go/dbutil_high"
+import (
+	"fmt"
+
+	"github.com/zukigit/db-go/dbutil_high"
+)
 
 func main() {
 	db := dbutil_high.GetInstance_MYSQL("root", "zabbix", "golearn", "", "")
 	db.DBconnect()
-	db.DBselect("select * from album")
+	result, err := db.DBselect("select * from album")
+
+	if err == nil {
+		fmt.Println("result:", result)
+	}
 }

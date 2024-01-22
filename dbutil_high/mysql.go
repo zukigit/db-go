@@ -8,10 +8,8 @@ type Mysql struct {
 	DButil dbutil.DButil
 }
 
-func (mysql *Mysql) GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) Mysql{
-	return Mysql{
-		DButil: dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype),
-	}
+func (mysql *Mysql) GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
+	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype);
 }
 
 func (mysql *Mysql) DBconnect() error {

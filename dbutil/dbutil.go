@@ -33,11 +33,6 @@ type DButil struct {
 	db         *sql.DB //no need
 }
 
-type DBcontract interface {
-	DBconnect() error
-	DBselect(unfmt string, arg ...any) ([][]interface{}, error)
-}
-
 func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DButil {
 	return DButil{
 		dbUsername: DBusername,

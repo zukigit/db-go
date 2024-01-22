@@ -12,7 +12,8 @@ func GetInstance_MYSQL() *Mysql {
 	return &Mysql{}
 }
 
-func (mysql *Mysql) GetUtilInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
+func (mysql *Mysql) GetUtilInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) {
+	DBtype := "mysql"
 	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 }
 

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	db := dbutil_high.GetInstance_MYSQL("root", "zabbix", "golearn", "", "")
+	db := dbutil_high.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
 	db.DBconnect()
 	result, err := db.DBselect("select * from album")
 

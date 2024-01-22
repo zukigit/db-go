@@ -8,7 +8,7 @@ type Psql struct {
 	DButil *dbutil.DButil
 }
 
-func GetInstance_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Psql {
+func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Psql {
 	DBtype := "mysql"
 	return &Psql{
 		DButil: dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype),

@@ -10,7 +10,7 @@ type Mysql struct {
 	DButil *dbutil.DButil
 }
 
-func GetInstance_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Mysql {
+func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Mysql {
 	DBtype := "mysql"
 
 	if DBhost == "" {

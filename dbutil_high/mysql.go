@@ -8,7 +8,11 @@ type Mysql struct {
 	DButil *dbutil.DButil
 }
 
-func (mysql *Mysql) GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
+func GetInstance_MYSQL() *Mysql {
+	return &Mysql{}
+}
+
+func (mysql *Mysql) GetUtilInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
 	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 }
 

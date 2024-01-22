@@ -5,15 +5,15 @@ import (
 )
 
 type Mysql struct {
-	DButil dbutil.DButil
+	DButil *dbutil.DButil
 }
 
 func (mysql *Mysql) GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
-	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype);
+	mysql.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 }
 
 func (mysql *Mysql) DBconnect() error {
-	return nil;
+	return nil
 }
 
 func (mysql *Mysql) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {

@@ -33,8 +33,8 @@ type DButil struct {
 	db         *sql.DB //no need
 }
 
-func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DButil {
-	return DButil{
+func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *DButil {
+	return &DButil{
 		dbUsername: DBusername,
 		dbPasswd:   DBpasswd,
 		dbName:     DBname,

@@ -23,8 +23,6 @@ const (
 	BIGINT   = "BIGINT"
 )
 
-var db *sql.DB
-
 type DButil struct {
 	dbUsername string  //mandatory
 	dbPasswd   string  //mandatory
@@ -35,22 +33,12 @@ type DButil struct {
 	db         *sql.DB //no need
 }
 
-func ChckDBsource(dbsource DButil) DButil {
-	//check for port and db host
-	if dbsource.dbPort == "" && dbsource.dbType == MYSQL {
-		dbsource.dbPort = "3306"
-	}
-	if dbsource.dbPort == "" && dbsource.dbType == POSTGRESQL {
-		dbsource.dbPort = "5432"
-	}
-	if dbsource.dbHost == "" {
-		dbsource.dbHost = "localhost"
-	}
-
-	return dbsource
+type DBcontract interface {
+	DBconnect() error
+	DBselect(unfmt string, arg ...any) ([][]interface{}, error)
 }
 
-func GetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DButil {
+func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) DButil {
 	return DButil{
 		dbUsername: DBusername,
 		dbPasswd:   DBpasswd,

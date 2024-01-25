@@ -28,7 +28,7 @@ func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DB
 	return instance
 }
 
-// DBinit_MYSQL returns Database pointer
+// DBinit_MYSQL returns mysql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
 func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
@@ -40,7 +40,7 @@ func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost stri
 	return DBinit(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 }
 
-// DBinit_MYSQL returns Database pointer
+// DBinit_MYSQL returns psql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
 func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {

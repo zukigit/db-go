@@ -89,11 +89,14 @@ func (dbsource *DButil) DBselect(query string) ([][]interface{}, error) {
 			case VARCHAR, NVARCHAR, TEXT:
 				var temp_value string
 				col_values[i] = &temp_value
-			case INT, BIGINT:
+			case INT:
+				var temp_value int
+				col_values[i] = &temp_value
+			case BIGINT:
 				var temp_value int64
 				col_values[i] = &temp_value
 			case DECIMAL:
-				var temp_value float32
+				var temp_value float64
 				col_values[i] = &temp_value
 			case BOOL:
 				var temp_value bool

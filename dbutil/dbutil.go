@@ -116,3 +116,17 @@ func (dbsource *DButil) DBselect(query string) ([][]interface{}, error) {
 	}
 	return row_values, nil
 }
+
+func (dbsource *DButil) DBexec(query string) (int64, error) {
+	result, err := dbsource.db.Exec("")
+	if err != nil {
+		return 0, err
+	}
+
+	affected_rows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return affected_rows, nil
+}

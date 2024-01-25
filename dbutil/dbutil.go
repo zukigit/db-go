@@ -2,6 +2,7 @@ package dbutil
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -153,6 +154,12 @@ func (dbsource *DButil) DBbegin() error {
 }
 
 func (dbsource *DButil) DBcommit() error {
+	if dbsource.tx == nil {
+		err := errors.New("Can not use DBcommit() for empty transaction")
+		fmt.Println("error:", err)
+		return err
+	}
+
 	err := dbsource.tx.Commit()
 	if err != nil {
 		fmt.Println("Can not commit transaction, error:", err)
@@ -163,6 +170,12 @@ func (dbsource *DButil) DBcommit() error {
 }
 
 func (dbsource *DButil) DBrollback() error {
+	if dbsource.tx == nil {
+		err := errors.New("Can not use DBrollback() for empty transaction")
+		fmt.Println("error:", err)
+		return err
+	}
+
 	err := dbsource.tx.Rollback()
 	if err != nil {
 		fmt.Println("Can not rollback transaction, error:", err)

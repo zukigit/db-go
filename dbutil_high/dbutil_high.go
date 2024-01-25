@@ -75,6 +75,7 @@ func (database *Database) DBbegin() error {
 }
 
 func (database *Database) DBcommit() error {
+
 	return database.DButil.DBcommit()
 }
 

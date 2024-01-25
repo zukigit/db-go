@@ -10,13 +10,13 @@ func main() {
 	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
 
 	db.DBconnect()
-	db.DBclose()
-	result, err := db.DBselect("select * from album a where a.title = '%s'", "Blue Train")
+	db.DBbegin()
+	afftected_rows, _ := db.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "misaki", "zuki", 69)
+	fmt.Println("afftected rows:", afftected_rows)
+	db.DBrollback()
+
+	result, err := db.DBselect("select * from album")
 	if err == nil {
 		fmt.Println("result:", result)
 	}
-
-	afftected_rows, _ := db.DBexec("delete from album where title = '%s'", "zuki")
-	fmt.Println("afftected rows:", afftected_rows)
-	db.DBbegin()
 }

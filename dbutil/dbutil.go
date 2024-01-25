@@ -45,11 +45,11 @@ func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost strin
 }
 
 func (dbsource *DButil) DBconnect() error {
-	var err error
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbsource.dbUsername, dbsource.dbPasswd, dbsource.dbHost, dbsource.dbPort, dbsource.dbName)
 
-	dbsource.db, err = sql.Open(dbsource.dbType, dataSourceName)
+	db, err := sql.Open(dbsource.dbType, dataSourceName)
+	dbsource.db = db
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())
 		return err

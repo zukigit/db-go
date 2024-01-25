@@ -60,3 +60,8 @@ func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, e
 	query := fmt.Sprintf(unfmt, arg...)
 	return database.DButil.DBselect(query)
 }
+
+func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
+	query := fmt.Sprintf(unfmt, arg...)
+	return database.DButil.DBexec(query)
+}

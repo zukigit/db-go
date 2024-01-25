@@ -31,6 +31,7 @@ type DButil struct {
 	dbPort     string  //optional
 	dbType     string  //no need
 	db         *sql.DB //no need
+	tx         *sql.Tx //no need
 }
 
 func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *DButil {
@@ -137,5 +138,36 @@ func (dbsource *DButil) DBexec(query string) (int64, error) {
 		return 0, err
 	}
 
-	return affected_rows, nil
+	return affected_rows, err
+}
+
+func (dbsource *DButil) DBbegin() error {
+	tx, err := dbsource.db.Begin()
+	if err != nil {
+		fmt.Println("Can not start transaction, error:", err)
+		return err
+	}
+
+	dbsource.tx = tx
+	return err
+}
+
+func (dbsource *DButil) DBcommit() error {
+	err := dbsource.tx.Commit()
+	if err != nil {
+		fmt.Println("Can not commit transaction, error:", err)
+		return err
+	}
+
+	return err
+}
+
+func (dbsource *DButil) DBrollback() error {
+	err := dbsource.tx.Rollback()
+	if err != nil {
+		fmt.Println("Can not rollback transaction, error:", err)
+		return err
+	}
+
+	return err
 }

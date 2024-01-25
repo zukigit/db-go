@@ -69,3 +69,15 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 	query := fmt.Sprintf(unfmt, arg...)
 	return database.DButil.DBexec(query)
 }
+
+func (database *Database) DBbegin() error {
+	return database.DButil.DBbegin()
+}
+
+func (database *Database) DBcommit() error {
+	return database.DButil.DBcommit()
+}
+
+func (database *Database) DBrollback() error {
+	return database.DButil.DBrollback()
+}

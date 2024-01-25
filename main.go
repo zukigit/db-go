@@ -18,4 +18,5 @@ func main() {
 
 	afftected_rows, _ := db.DBexec("delete from album where title = '%s'", "zuki")
 	fmt.Println("afftected rows:", afftected_rows)
+	db.DBbegin()
 }

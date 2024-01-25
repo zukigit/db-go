@@ -66,6 +66,10 @@ func (dbsource *DButil) DBconnect() error {
 	return nil
 }
 
+func (dbsource *DButil) DBclose() error {
+	return dbsource.db.Close()
+}
+
 func (dbsource *DButil) DBselect(query string) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 

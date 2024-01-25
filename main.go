@@ -10,6 +10,7 @@ func main() {
 	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
 
 	db.DBconnect()
+	db.DBclose()
 	result, err := db.DBselect("select * from album a where a.title = '%s'", "Blue Train")
 	if err == nil {
 		fmt.Println("result:", result)

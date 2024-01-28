@@ -70,8 +70,9 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 	return database.DButil.DBexec(query)
 }
 
-func (database *Database) DBbegin() error {
-	return database.DButil.DBbegin()
+func (database *Database) DBbegin() {
+	db := database
+	db.DButil.DBisInTx = true
 }
 
 func (database *Database) DBcommit() error {

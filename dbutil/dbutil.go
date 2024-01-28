@@ -2,7 +2,6 @@ package dbutil
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"reflect"
 
@@ -32,7 +31,7 @@ type DButil struct {
 	dbPort     string  //optional
 	dbType     string  //no need
 	db         *sql.DB //no need
-	tx         *sql.Tx //no need
+	dbIsInTx   bool    //no need
 }
 
 func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *DButil {
@@ -43,6 +42,7 @@ func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost strin
 		dbHost:     DBhost,
 		dbPort:     DBport,
 		dbType:     DBtype,
+		dbIsInTx:   false,
 	}
 }
 
@@ -143,44 +143,13 @@ func (dbsource *DButil) DBexec(query string) (int64, error) {
 }
 
 func (dbsource *DButil) DBbegin() error {
-	tx, err := dbsource.db.Begin()
-	if err != nil {
-		fmt.Println("Can not start transaction, error:", err)
-		return err
-	}
-
-	dbsource.tx = tx
-	return err
+	return nil
 }
 
 func (dbsource *DButil) DBcommit() error {
-	if dbsource.tx == nil {
-		err := errors.New("Can not use DBcommit() for empty transaction")
-		fmt.Println("error:", err)
-		return err
-	}
-
-	err := dbsource.tx.Commit()
-	if err != nil {
-		fmt.Println("Can not commit transaction, error:", err)
-		return err
-	}
-
-	return err
+	return nil
 }
 
 func (dbsource *DButil) DBrollback() error {
-	if dbsource.tx == nil {
-		err := errors.New("Can not use DBrollback() for empty transaction")
-		fmt.Println("error:", err)
-		return err
-	}
-
-	err := dbsource.tx.Rollback()
-	if err != nil {
-		fmt.Println("Can not rollback transaction, error:", err)
-		return err
-	}
-
-	return err
+	return nil
 }

@@ -72,7 +72,7 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 	return database.DButil.DBexec(query)
 }
 
-func (database *Database) DBbegin() *Database {
+func (database *Database) DBbegin() error {
 	return nil
 }
 

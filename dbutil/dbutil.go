@@ -31,6 +31,7 @@ type DButil struct {
 	dbPort     string  //optional
 	dbType     string  //no need
 	db         *sql.DB //no need
+	tx         *sql.Tx //no need
 }
 
 func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *DButil {

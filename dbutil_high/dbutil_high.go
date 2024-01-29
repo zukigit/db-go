@@ -8,7 +8,8 @@ import (
 )
 
 type Database struct {
-	DButil *dbutil.DButil
+	DButil   *dbutil.DButil
+	DBisInTx bool
 }
 
 func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *Database {
@@ -24,6 +25,7 @@ func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DB
 			instance = new(Database)
 		},
 	)
+	instance.DBisInTx = false
 	instance.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 	return instance
 }
@@ -71,14 +73,7 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 }
 
 func (database *Database) DBbegin() *Database {
-	db := &Database{
-		DButil: &dbutil.DButil{
-			DBisInTx: true,
-		},
-	}
-
-	database.DBexec("begin;")
-	return db
+	return nil
 }
 
 func (database *Database) DBcommit() error {

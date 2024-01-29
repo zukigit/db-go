@@ -71,9 +71,13 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 }
 
 func (database *Database) DBbegin() *Database {
-	db := database
-	db.DButil.DBisInTx = true
+	db := &Database{
+		DButil: &dbutil.DButil{
+			DBisInTx: true,
+		},
+	}
 
+	database.DBexec("begin;")
 	return db
 }
 
@@ -83,5 +87,6 @@ func (database *Database) DBcommit() error {
 }
 
 func (database *Database) DBrollback() error {
-	return database.DButil.DBrollback()
+	database.DBexec("rollback;")
+	return nil
 }

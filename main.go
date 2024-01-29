@@ -7,16 +7,17 @@ import (
 )
 
 func main() {
-	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
+	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "10.1.9.252", "")
 
 	db.DBconnect()
-	fmt.Println("before DB:", db.DButil.DBisInTx)
+	db.DBbegin()
 
-	db1 := db.DBbegin()
+	// tx_afftected_rows, _ := db1.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "from trax", "zuki", 69)
+	// fmt.Println("afftected rows:", tx_afftected_rows)
 
-	fmt.Println("DB:", db.DButil.DBisInTx, "DB1:", db1.DButil.DBisInTx)
-	// afftected_rows, _ := db.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "misaki", "zuki", 69)
-	// fmt.Println("afftected rows:", afftected_rows)
+	afftected_rows, _ := db.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "normal", "zuki", 69)
+	fmt.Println("afftected rows:", afftected_rows)
+
 	// db.DBrollback()
 
 	// result, err := db.DBselect("select * from album")

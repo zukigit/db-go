@@ -31,7 +31,7 @@ type DButil struct {
 	dbPort     string  //optional
 	dbType     string  //no need
 	db         *sql.DB //no need
-	tx         *sql.Tx //no need
+	Tx         *sql.Tx //no need
 }
 
 func GetInstance(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *DButil {
@@ -142,7 +142,14 @@ func (dbsource *DButil) DBexec(query string) (int64, error) {
 }
 
 func (dbsource *DButil) DBbegin() error {
-	return nil
+	tx, err := dbsource.db.Begin()
+	if err != nil {
+		fmt.Println("Can not start the transaction, error:", err)
+		return err
+	}
+
+	dbsource.Tx = tx
+	return err
 }
 
 func (dbsource *DButil) DBcommit() error {

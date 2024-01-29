@@ -73,6 +73,14 @@ func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 }
 
 func (database *Database) DBbegin() error {
+	database.DButil.DBbegin()
+
+	database = &Database{
+		DBisInTx: true,
+		DButil: &dbutil.DButil{
+			Tx: database.DButil.Tx,
+		},
+	}
 	return nil
 }
 

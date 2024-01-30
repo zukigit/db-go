@@ -23,6 +23,8 @@ const (
 	BIGINT   = "BIGINT"
 )
 
+var db *sql.DB //no need
+
 type DButil struct {
 	dbUsername string  //mandatory
 	dbPasswd   string  //mandatory

@@ -21,7 +21,7 @@ func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost str
 	return dataSourceName
 }
 
-func DBinit() *Database {
+func dbInit() *Database {
 	var instance *Database
 
 	once.Do(
@@ -50,7 +50,7 @@ func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost stri
 		return err, nil
 	}
 
-	return err, DBinit()
+	return err, dbInit()
 }
 
 // DBinit_MYSQL returns psql Database pointer
@@ -70,7 +70,7 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 		return err, nil
 	}
 
-	return err, DBinit()
+	return err, dbInit()
 }
 
 // func (database *Database) DBconnect() error {

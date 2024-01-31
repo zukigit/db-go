@@ -12,7 +12,7 @@ type Database struct {
 	DBisInTx bool
 }
 var once sync.Once
-
+var instance *Database
 
 func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string{
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
@@ -22,8 +22,6 @@ func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost str
 }
 
 func dbInit() *Database {
-	var instance *Database
-
 	once.Do(
 		func() {
 			instance = new(Database)

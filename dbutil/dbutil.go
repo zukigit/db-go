@@ -34,7 +34,12 @@ type DButil struct {
 }
 
 func setDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
-	
+	dbUsername = DBusername
+	dbPasswd = DBpasswd
+	dbName = DBname
+	dbHost = DBhost
+	dbPort = DBport
+	dbType = DBtype
 }
 
 // func (dbsource *DButil) DBconnect() error {

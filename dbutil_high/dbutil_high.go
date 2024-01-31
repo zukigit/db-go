@@ -1,7 +1,6 @@
 package dbutil_high
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/zukigit/db-go/dbutil"
@@ -53,42 +52,42 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 	return DBinit(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 }
 
-func (database *Database) DBconnect() error {
-	return database.DButil.DBconnect()
-}
+// func (database *Database) DBconnect() error {
+// 	return database.DButil.DBconnect()
+// }
 
-func (database *Database) DBclose() error {
-	return database.DButil.DBclose()
-}
+// func (database *Database) DBclose() error {
+// 	return database.DButil.DBclose()
+// }
 
-func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
-	query := fmt.Sprintf(unfmt, arg...)
-	return database.DButil.DBselect(query)
-}
+// func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+// 	query := fmt.Sprintf(unfmt, arg...)
+// 	return database.DButil.DBselect(query)
+// }
 
-func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
-	query := fmt.Sprintf(unfmt, arg...)
-	return database.DButil.DBexec(query)
-}
+// func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
+// 	query := fmt.Sprintf(unfmt, arg...)
+// 	return database.DButil.DBexec(query)
+// }
 
-func (database *Database) DBbegin() error {
-	database.DButil.DBbegin()
+// func (database *Database) DBbegin() error {
+// 	database.DButil.DBbegin()
 
-	database = &Database{
-		DBisInTx: true,
-		DButil: &dbutil.DButil{
-			Tx: database.DButil.Tx,
-		},
-	}
-	return nil
-}
+// 	database = &Database{
+// 		DBisInTx: true,
+// 		DButil: &dbutil.DButil{
+// 			Tx: database.DButil.Tx,
+// 		},
+// 	}
+// 	return nil
+// }
 
-func (database *Database) DBcommit() error {
+// func (database *Database) DBcommit() error {
 
-	return database.DButil.DBcommit()
-}
+// 	return database.DButil.DBcommit()
+// }
 
-func (database *Database) DBrollback() error {
-	database.DBexec("rollback;")
-	return nil
-}
+// func (database *Database) DBrollback() error {
+// 	database.DBexec("rollback;")
+// 	return nil
+// }

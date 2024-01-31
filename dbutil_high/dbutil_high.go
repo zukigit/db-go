@@ -1,6 +1,7 @@
 package dbutil_high
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/zukigit/db-go/dbutil"
@@ -11,17 +12,20 @@ type Database struct {
 	DBisInTx bool
 }
 
-func SetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) error{
+func SetDBsourceToUtil(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) error{
 	return nil
 }
 
-func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *Database {
+func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string{
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		dbUsername, dbPasswd, dbHost, dbPort, dbName)
+	
+	return dataSourceName
+}
+
+func DBinit(DBsource string, DBtype string) *Database {
 	var once sync.Once
 	var instance *Database
-
-	if DBhost == "" {
-		DBhost = "localhost"
-	}
 
 	once.Do(
 		func() {
@@ -41,7 +45,7 @@ func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost stri
 		DBport = "3306"
 	}
 
-	return DBinit(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
+	return DBinit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
 }
 
 // DBinit_MYSQL returns psql Database pointer
@@ -53,7 +57,7 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 		DBport = "5432"
 	}
 
-	return DBinit(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
+	return DBinit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
 }
 
 // func (database *Database) DBconnect() error {

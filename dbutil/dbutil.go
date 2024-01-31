@@ -28,7 +28,7 @@ type Connection struct {
 	Tx         *sql.Tx //no need
 }
 
-func setDBsource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string, dbType string) error{
+func SetDBsource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string, dbType string) error{
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbUsername, dbPasswd, dbHost, dbPort, dbName)
 	
@@ -42,27 +42,17 @@ func setDBsource(dbUsername string, dbPasswd string, dbName string, dbHost strin
 	return err
 }
 
-// func (dbsource *DButil) DBconnect() error {
-// 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-// 		dbsource.dbUsername, dbsource.dbPasswd, dbsource.dbHost, dbsource.dbPort, dbsource.dbName)
+func DBconnect() error {
+	pingErr := db.Ping()
+	if pingErr != nil {
+		fmt.Println("Can not connect to the databse, Error msg: " + pingErr.Error())
+		db.Close()
+		return pingErr
+	}
 
-// 	db, err := sql.Open(dbsource.dbType, dataSourceName)
-// 	dbsource.db = db
-// 	if err != nil {
-// 		fmt.Println("Db source is invalid, Error msg: " + err.Error())
-// 		return err
-// 	}
-
-// 	pingErr := dbsource.db.Ping()
-// 	if pingErr != nil {
-// 		fmt.Println("Can not connect to the databse. Host: " + dbsource.dbHost + ", Error msg: " + pingErr.Error())
-// 		dbsource.db.Close()
-// 		return pingErr
-// 	}
-
-// 	fmt.Println("Connected to the db host: " + dbsource.dbHost)
-// 	return nil
-// }
+	fmt.Println("Connected to the db host.")
+	return nil
+}
 
 // func (dbsource *DButil) DBclose() error {
 // 	return dbsource.db.Close()

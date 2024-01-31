@@ -11,6 +11,10 @@ type Database struct {
 	DBisInTx bool
 }
 
+func SetDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) error{
+	return nil
+}
+
 func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) *Database {
 	var once sync.Once
 	var instance *Database

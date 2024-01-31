@@ -11,10 +11,8 @@ type Database struct {
 	connection   *dbutil.Connection
 	DBisInTx bool
 }
+var once sync.Once
 
-func SetDBsourceToUtil(DBsource string, DBtype string) error{
-	return nil
-}
 
 func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string{
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
@@ -23,8 +21,7 @@ func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost str
 	return dataSourceName
 }
 
-func DBinit(DBsource string, DBtype string) *Database {
-	var once sync.Once
+func DBinit() *Database {
 	var instance *Database
 
 	once.Do(
@@ -39,25 +36,41 @@ func DBinit(DBsource string, DBtype string) *Database {
 // DBinit_MYSQL returns mysql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
-func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
+func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) (error, *Database) {
 	DBtype := "mysql"
 	if DBport == "" {
 		DBport = "3306"
 	}
+	if DBhost == "" {
+		DBhost = "localhost"
+	}
 
-	return DBinit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
+	err := dbutil.SetDBsource(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
+	if err != nil {
+		return err, nil
+	}
+
+	return err, DBinit()
 }
 
 // DBinit_MYSQL returns psql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
-func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
+func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) (error, *Database) {
 	DBtype := "postgres"
 	if DBport == "" {
 		DBport = "5432"
 	}
+	if DBhost == "" {
+		DBhost = "localhost"
+	}
 
-	return DBinit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
+	err := dbutil.SetDBsource(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
+	if err != nil {
+		return err, nil
+	}
+
+	return err, DBinit()
 }
 
 // func (database *Database) DBconnect() error {

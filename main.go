@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	_, db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "10.1.9.252", "")
+	// _, db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "10.1.9.252", "")
+	_, db := dbutil.DBinit_MYSQL("", "", "", "", "")
 	db.DBconnect()
 	// db.DBconnect()
 	// db.DBbegin()

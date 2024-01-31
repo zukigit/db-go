@@ -12,7 +12,7 @@ type Database struct {
 	DBisInTx bool
 }
 
-func SetDBsourceToUtil(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) error{
+func SetDBsourceToUtil(DBsource string, DBtype string) error{
 	return nil
 }
 

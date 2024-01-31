@@ -28,10 +28,7 @@ type Connection struct {
 	Tx         *sql.Tx //no need
 }
 
-func SetDBsource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string, dbType string) error{
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		dbUsername, dbPasswd, dbHost, dbPort, dbName)
-	
+func SetDBsource(dataSourceName string, dbType string) error{
 	db_, err := sql.Open(dbType, dataSourceName)
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())

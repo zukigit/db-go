@@ -2,6 +2,7 @@ package dbutil
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -22,24 +23,23 @@ const (
 )
 
 var db *sql.DB //no need
-var dbUsername string  //mandatory
-var dbPasswd   string  //mandatory
-var dbName     string  //mandatory
-var dbHost     string  //optional
-var dbPort     string  //optional
-var dbType     string  //no need
 
-type DButil struct {
+type Connection struct {
 	Tx         *sql.Tx //no need
 }
 
-func setDBsource(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string, DBtype string) {
-	dbUsername = DBusername
-	dbPasswd = DBpasswd
-	dbName = DBname
-	dbHost = DBhost
-	dbPort = DBport
-	dbType = DBtype
+func setDBsource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string, dbType string) error{
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		dbUsername, dbPasswd, dbHost, dbPort, dbName)
+	
+	db_, err := sql.Open(dbType, dataSourceName)
+	if err != nil {
+		fmt.Println("Db source is invalid, Error msg: " + err.Error())
+		return err
+	}
+
+	db = db_
+	return err
 }
 
 // func (dbsource *DButil) DBconnect() error {

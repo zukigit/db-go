@@ -7,7 +7,7 @@ import (
 )
 
 type Database struct {
-	DButil   *dbutil.DButil
+	connection   *dbutil.Connection
 	DBisInTx bool
 }
 

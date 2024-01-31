@@ -26,7 +26,6 @@ func DBinit(DBusername string, DBpasswd string, DBname string, DBhost string, DB
 		},
 	)
 	instance.DBisInTx = false
-	instance.DButil = dbutil.GetInstance(DBusername, DBpasswd, DBname, DBhost, DBport, DBtype)
 	return instance
 }
 

@@ -73,9 +73,9 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 	return err, dbInit()
 }
 
-// func (database *Database) DBconnect() error {
-// 	return database.DButil.DBconnect()
-// }
+func (database *Database) DBconnect() error {
+	return dbutil.DBconnect()
+}
 
 // func (database *Database) DBclose() error {
 // 	return database.DButil.DBclose()

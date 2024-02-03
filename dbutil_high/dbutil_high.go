@@ -22,7 +22,11 @@ func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost str
 	return dataSourceName
 }
 
-func dbInit() *Database {
+func dbInit(dataSourceName string, dbType string) *Database {
+	err := dbutil.SetDBsource(dataSourceName, dbType)
+	if err != nil {
+		return nil
+	}
 	once.Do(
 		func() {
 			instance = new(Database)
@@ -44,18 +48,13 @@ func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost stri
 		DBhost = "localhost"
 	}
 
-	err := dbutil.SetDBsource(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
-	if err != nil {
-		return nil
-	}
-
-	return dbInit()
+	return dbInit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
 }
 
 // DBinit_MYSQL returns psql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
-func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) (error, *Database) {
+func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
 	DBtype := "postgres"
 	if DBport == "" {
 		DBport = "5432"
@@ -64,12 +63,7 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 		DBhost = "localhost"
 	}
 
-	err := dbutil.SetDBsource(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
-	if err != nil {
-		return err, nil
-	}
-
-	return err, dbInit()
+	return dbInit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
 }
 
 func (database *Database) DBconnect() error {

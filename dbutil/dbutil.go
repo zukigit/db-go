@@ -25,10 +25,10 @@ const (
 var db *sql.DB //no need
 
 type Connection struct {
-	Tx         *sql.Tx //no need
+	Tx *sql.Tx //no need
 }
 
-func SetDBsource(dataSourceName string, dbType string) error{
+func SetDBsource(dataSourceName string, dbType string) error {
 	db_, err := sql.Open(dbType, dataSourceName)
 	if err != nil {
 		fmt.Println("Db source is invalid, Error msg: " + err.Error())

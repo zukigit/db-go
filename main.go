@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	dbutil "github.com/zukigit/db-go/dbutil_high"
 )
@@ -9,7 +10,8 @@ import (
 func main() {
 	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
 	// db.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "zuki", "zuki", 69)
-	db.DBexec("delete from album where title = '%s'", "zuki")
+	time.Sleep(time.Second * 5)
+	db.DBexec("delete from album where title = '%s'", "mikasa")
 	result := db.DBselect("select * from album a")
 	fmt.Println("result :", result)
 	db.DBclose()

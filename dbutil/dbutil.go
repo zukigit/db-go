@@ -29,17 +29,6 @@ type Connection struct {
 	Tx *sql.Tx //no need
 }
 
-func SetDBsource(dataSourceName string, dbType string) error {
-	db_, err := sql.Open(dbType, dataSourceName)
-	if err != nil {
-		fmt.Println("Db source is invalid, Error msg: " + err.Error())
-		return err
-	}
-
-	db = db_
-	return err
-}
-
 func DBconnect() error {
 	pingErr := db.Ping()
 	if pingErr != nil {
@@ -50,6 +39,20 @@ func DBconnect() error {
 
 	fmt.Println("Connected to the db host.")
 	return nil
+}
+
+func SetDBsource(dataSourceName string, dbType string) error {
+	db_, err := sql.Open(dbType, dataSourceName)
+	if err != nil {
+		fmt.Println("Db source is invalid, Error msg: " + err.Error())
+		return err
+	}
+	db = db_
+
+	if err := DBconnect(); err != nil {
+		return err
+	}
+	return err
 }
 
 func DBclose() error {

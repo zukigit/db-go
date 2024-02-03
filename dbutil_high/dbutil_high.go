@@ -74,10 +74,16 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 }
 
 func (database *Database) DBconnect() error {
+	if !database.isDBinit() {
+		return nil
+	}
 	return dbutil.DBconnect()
 }
 
 func (database *Database) DBclose() error {
+	if !database.isDBinit() {
+		return nil
+	}
 	return dbutil.DBclose()
 }
 

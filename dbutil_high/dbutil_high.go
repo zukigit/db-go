@@ -16,6 +16,10 @@ var once sync.Once
 var instance *Database
 
 func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string {
+	if dbHost == "" {
+		dbHost = "localhost"
+	}
+
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbUsername, dbPasswd, dbHost, dbPort, dbName)
 
@@ -39,13 +43,11 @@ func dbInit(dataSourceName string, dbType string) *Database {
 // DBinit_MYSQL returns mysql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
+// Only need to be called once until db values are changed.
 func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
 	DBtype := "mysql"
 	if DBport == "" {
 		DBport = "3306"
-	}
-	if DBhost == "" {
-		DBhost = "localhost"
 	}
 
 	return dbInit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
@@ -58,9 +60,6 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 	DBtype := "postgres"
 	if DBport == "" {
 		DBport = "5432"
-	}
-	if DBhost == "" {
-		DBhost = "localhost"
 	}
 
 	return dbInit(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)

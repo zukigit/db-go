@@ -15,6 +15,14 @@ type Database struct {
 var once sync.Once
 var instance *Database
 
+func (database *Database) isDBinit() bool {
+	if database != nil {
+		return true
+	}
+	fmt.Println("Please DBinit_databaseName() first")
+	return false
+}
+
 func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string {
 	if dbHost == "" {
 		dbHost = "localhost"

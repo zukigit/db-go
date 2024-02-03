@@ -77,9 +77,9 @@ func (database *Database) DBconnect() error {
 	return dbutil.DBconnect()
 }
 
-// func (database *Database) DBclose() error {
-// 	return database.DButil.DBclose()
-// }
+func (database *Database) DBclose() error {
+	return dbutil.DBclose()
+}
 
 // func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 // 	query := fmt.Sprintf(unfmt, arg...)

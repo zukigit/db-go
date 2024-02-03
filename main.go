@@ -6,6 +6,7 @@ import (
 
 func main() {
 	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
+	db.DBclose()
 	db.DBconnect()
 
 	// db.DBbegin()

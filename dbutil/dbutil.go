@@ -3,6 +3,7 @@ package dbutil
 import (
 	"database/sql"
 	"fmt"
+	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -42,7 +43,7 @@ func SetDBsource(dataSourceName string, dbType string) error {
 func DBconnect() error {
 	pingErr := db.Ping()
 	if pingErr != nil {
-		fmt.Println("Can not connect to the databse, Error msg: " + pingErr.Error())
+		fmt.Printf("Can not connect to the databse, Error msg: %s\n", pingErr.Error())
 		db.Close()
 		return pingErr
 	}
@@ -55,59 +56,61 @@ func DBclose() error {
 	return db.Close()
 }
 
-// func (dbsource *DButil) DBselect(query string) ([][]interface{}, error) {
-// 	row_values := make([][]interface{}, 0)
+func DBselect(query string) ([][]interface{}, error) {
+	row_values := make([][]interface{}, 0)
 
-// 	rows, err := dbsource.db.Query(query)
-// 	if err != nil {
-// 		return row_values, err
-// 	}
-// 	defer rows.Close()
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Printf("Query failed, query: %s\n", query)
+		return row_values, err
+	}
+	defer rows.Close()
 
-// 	columns, err := rows.ColumnTypes()
-// 	if err != nil {
-// 		return row_values, err
-// 	}
+	columns, err := rows.ColumnTypes()
+	if err != nil {
+		fmt.Println("Can not get column types")
+		return row_values, err
+	}
 
-// 	for rows.Next() {
-// 		col_values := make([]interface{}, len(columns))
+	for rows.Next() {
+		col_values := make([]interface{}, len(columns))
 
-// 		//defines col_values' types
-// 		for i := range col_values {
-// 			switch columns[i].DatabaseTypeName() {
-// 			case VARCHAR, NVARCHAR, TEXT:
-// 				var temp_value string
-// 				col_values[i] = &temp_value
-// 			case INT:
-// 				var temp_value int
-// 				col_values[i] = &temp_value
-// 			case BIGINT:
-// 				var temp_value int64
-// 				col_values[i] = &temp_value
-// 			case DECIMAL:
-// 				var temp_value float64
-// 				col_values[i] = &temp_value
-// 			case BOOL:
-// 				var temp_value bool
-// 				col_values[i] = &temp_value
-// 			}
-// 		}
+		//defines col_values' types
+		for i := range col_values {
+			switch columns[i].DatabaseTypeName() {
+			case VARCHAR, NVARCHAR, TEXT:
+				var temp_value string
+				col_values[i] = &temp_value
+			case INT:
+				var temp_value int
+				col_values[i] = &temp_value
+			case BIGINT:
+				var temp_value int64
+				col_values[i] = &temp_value
+			case DECIMAL:
+				var temp_value float64
+				col_values[i] = &temp_value
+			case BOOL:
+				var temp_value bool
+				col_values[i] = &temp_value
+			}
+		}
 
-// 		err := rows.Scan(col_values...)
-// 		if err != nil {
-// 			fmt.Println("rows scan error ", err)
-// 			return row_values, err
-// 		}
+		err := rows.Scan(col_values...)
+		if err != nil {
+			fmt.Println("rows scan error ", err)
+			return row_values, err
+		}
 
-// 		//parses to readable data types from interface
-// 		for i := range col_values {
-// 			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
-// 		}
+		//parses to readable data types from interface
+		for i := range col_values {
+			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
+		}
 
-// 		row_values = append(row_values, col_values)
-// 	}
-// 	return row_values, nil
-// }
+		row_values = append(row_values, col_values)
+	}
+	return row_values, nil
+}
 
 // func (dbsource *DButil) DBexec(query string) (int64, error) {
 // 	result, err := dbsource.db.Exec(query)

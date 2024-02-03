@@ -81,10 +81,10 @@ func (database *Database) DBclose() error {
 	return dbutil.DBclose()
 }
 
-// func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
-// 	query := fmt.Sprintf(unfmt, arg...)
-// 	return database.DButil.DBselect(query)
-// }
+func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+	query := fmt.Sprintf(unfmt, arg...)
+	return dbutil.DBselect(query)
+}
 
 // func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 // 	query := fmt.Sprintf(unfmt, arg...)

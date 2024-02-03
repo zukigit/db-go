@@ -5,10 +5,8 @@ import (
 )
 
 func main() {
-	// _, db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "10.1.9.252", "")
-	_, db := dbutil.DBinit_MYSQL("", "", "", "", "")
+	db := dbutil.DBinit_MYSQL("root", "zabbix", "golearn", "", "")
 	db.DBconnect()
-	// db.DBconnect()
 	// db.DBbegin()
 
 	// tx_afftected_rows, _ := db1.DBexec("INSERT INTO album (title, artist, price) VALUES ('%s', '%s', %d)", "from trax", "zuki", 69)

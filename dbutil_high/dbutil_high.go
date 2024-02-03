@@ -8,16 +8,17 @@ import (
 )
 
 type Database struct {
-	connection   *dbutil.Connection
-	DBisInTx bool
+	connection *dbutil.Connection
+	DBisInTx   bool
 }
+
 var once sync.Once
 var instance *Database
 
-func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string{
+func getDataSource(dbUsername string, dbPasswd string, dbName string, dbHost string, dbPort string) string {
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		dbUsername, dbPasswd, dbHost, dbPort, dbName)
-	
+
 	return dataSourceName
 }
 
@@ -34,7 +35,7 @@ func dbInit() *Database {
 // DBinit_MYSQL returns mysql Database pointer
 //
 // Only the first three params are mandatory. You can leave the rest as empty string for default values.
-func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) (error, *Database) {
+func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost string, DBport string) *Database {
 	DBtype := "mysql"
 	if DBport == "" {
 		DBport = "3306"
@@ -45,10 +46,10 @@ func DBinit_MYSQL(DBusername string, DBpasswd string, DBname string, DBhost stri
 
 	err := dbutil.SetDBsource(getDataSource(DBusername, DBpasswd, DBname, DBhost, DBport), DBtype)
 	if err != nil {
-		return err, nil
+		return nil
 	}
 
-	return err, dbInit()
+	return dbInit()
 }
 
 // DBinit_MYSQL returns psql Database pointer

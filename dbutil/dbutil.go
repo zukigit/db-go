@@ -112,21 +112,21 @@ func DBselect(query string) ([][]interface{}, error) {
 	return row_values, nil
 }
 
-// func (dbsource *DButil) DBexec(query string) (int64, error) {
-// 	result, err := dbsource.db.Exec(query)
-// 	if err != nil {
-// 		fmt.Println("db execution error:", err)
-// 		return 0, err
-// 	}
+func DBexec(query string) (int64, error) {
+	result, err := db.Exec(query)
+	if err != nil {
+		fmt.Println("db execution error:", err)
+		return 0, err
+	}
 
-// 	affected_rows, err := result.RowsAffected()
-// 	if err != nil {
-// 		fmt.Println("Can not get affected rows, error:", err)
-// 		return 0, err
-// 	}
+	affected_rows, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println("Can not get affected rows, error:", err)
+		return 0, err
+	}
 
-// 	return affected_rows, err
-// }
+	return affected_rows, err
+}
 
 // func (dbsource *DButil) DBbegin() error {
 // 	tx, err := dbsource.db.Begin()

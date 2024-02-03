@@ -81,15 +81,22 @@ func (database *Database) DBclose() error {
 	return dbutil.DBclose()
 }
 
-func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
+func (database *Database) DBselect(unfmt string, arg ...any) [][]interface{} {
+	if !database.isDBinit() {
+		return nil
+	}
 	query := fmt.Sprintf(unfmt, arg...)
-	return dbutil.DBselect(query)
+	result, _ := dbutil.DBselect(query)
+	return result
 }
 
-// func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
-// 	query := fmt.Sprintf(unfmt, arg...)
-// 	return database.DButil.DBexec(query)
-// }
+func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
+	if !database.isDBinit() {
+		return 0, nil
+	}
+	query := fmt.Sprintf(unfmt, arg...)
+	return dbutil.DBexec(query)
+}
 
 // func (database *Database) DBbegin() error {
 // 	database.DButil.DBbegin()

@@ -1,6 +1,7 @@
 package dbutil_high
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 
@@ -87,13 +88,12 @@ func (database *Database) DBclose() error {
 	return dbutil.DBclose()
 }
 
-func (database *Database) DBselect(unfmt string, arg ...any) [][]interface{} {
+func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, error) {
 	if !database.isDBinit() {
-		return nil
+		return nil, errors.New("Database is not initialized.")
 	}
 	query := fmt.Sprintf(unfmt, arg...)
-	result, _ := dbutil.DBselect(query)
-	return result
+	return dbutil.DBselect(query)
 }
 
 func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {

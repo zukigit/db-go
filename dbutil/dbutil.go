@@ -64,14 +64,14 @@ func DBselect(query string) ([][]interface{}, error) {
 
 	rows, err := db.Query(query)
 	if err != nil {
-		fmt.Printf("Query failed, query: %s\n", query)
+		fmt.Printf("Query failed, ERROR: %s, QUERY: %s\n", err, query)
 		return row_values, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.ColumnTypes()
 	if err != nil {
-		fmt.Println("Can not get column types")
+		fmt.Println("Can not get column types, ERROR:", err)
 		return row_values, err
 	}
 
@@ -101,7 +101,7 @@ func DBselect(query string) ([][]interface{}, error) {
 
 		err := rows.Scan(col_values...)
 		if err != nil {
-			fmt.Println("rows scan error ", err)
+			fmt.Println("rows scan error, ERROR:", err)
 			return row_values, err
 		}
 

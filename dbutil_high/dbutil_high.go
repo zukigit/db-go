@@ -76,14 +76,14 @@ func DBinit_PSQL(DBusername string, DBpasswd string, DBname string, DBhost strin
 
 func (database *Database) DBconnect() error {
 	if !database.isDBinit() {
-		return nil
+		return errors.New("Database is not initialized.")
 	}
 	return dbutil.DBconnect()
 }
 
 func (database *Database) DBclose() error {
 	if !database.isDBinit() {
-		return nil
+		return errors.New("Database is not initialized.")
 	}
 	return dbutil.DBclose()
 }
@@ -98,23 +98,18 @@ func (database *Database) DBselect(unfmt string, arg ...any) ([][]interface{}, e
 
 func (database *Database) DBexec(unfmt string, arg ...any) (int64, error) {
 	if !database.isDBinit() {
-		return 0, nil
+		return 0, errors.New("Database is not initialized.")
 	}
 	query := fmt.Sprintf(unfmt, arg...)
 	return dbutil.DBexec(query)
 }
 
-// func (database *Database) DBbegin() error {
-// 	database.DButil.DBbegin()
-
-// 	database = &Database{
-// 		DBisInTx: true,
-// 		DButil: &dbutil.DButil{
-// 			Tx: database.DButil.Tx,
-// 		},
-// 	}
-// 	return nil
-// }
+func (database *Database) DBbegin() error {
+	temp_db := *database
+	database = &temp_db
+	database.DBisInTx = true
+	return nil
+}
 
 // func (database *Database) DBcommit() error {
 

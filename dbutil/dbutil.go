@@ -24,35 +24,35 @@ const (
 )
 
 var db *sql.DB //no need
+var err error
 
-type Connection struct {
-	Tx *sql.Tx //no need
-}
-
-func DBconnect() error {
-	pingErr := db.Ping()
-	if pingErr != nil {
-		fmt.Printf("Can not connect to the databse, Error msg: %s\n", pingErr.Error())
-		db.Close()
-		return pingErr
+func DBconnect(dbType string, dataSourceName string) error {
+	db, err = sql.Open(dbType, dataSourceName)
+	if err != nil {
+		return err
 	}
 
-	fmt.Println("Connected to the db host.")
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func SetDBsource(dataSourceName string, dbType string) error {
-	db_, err := sql.Open(dbType, dataSourceName)
-	if err != nil {
-		fmt.Println("Db source is invalid, Error msg: " + err.Error())
-		return err
+func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
+	dbType := MYSQL
+	if dbHost == "" {
+		dbHost = "localhost"
 	}
-	db = db_
+	if dbPort == 0 {
+		dbPort = 3306
+	}
 
-	if err := DBconnect(); err != nil {
-		return err
-	}
-	return err
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
+		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
+
+	return DBconnect(dbType, dataSourceName)
 }
 
 func DBclose() error {
@@ -130,22 +130,3 @@ func DBexec(query string) (int64, error) {
 
 	return affected_rows, err
 }
-
-// func (dbsource *DButil) DBbegin() error {
-// 	tx, err := dbsource.db.Begin()
-// 	if err != nil {
-// 		fmt.Println("Can not start the transaction, error:", err)
-// 		return err
-// 	}
-
-// 	dbsource.Tx = tx
-// 	return err
-// }
-
-// func (dbsource *DButil) DBcommit() error {
-// 	return nil
-// }
-
-// func (dbsource *DButil) DBrollback() error {
-// 	return nil
-// }

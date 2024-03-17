@@ -161,10 +161,11 @@ func Execute(unfmt string, arg ...any) (int64, error) {
 }
 
 func dbBegin(query string) error {
-	_, err := dbExecute(query)
+	_, err = dbExecute(query)
 	if err != nil {
 		return err
 	}
+	isInTranx = true
 	return nil
 }
 
@@ -175,10 +176,19 @@ func Begin() error {
 		case MYSQL:
 			tranx_query = "START TRANSACTION;"
 		case POSTGRESQL:
-			tranx_query = "BEGIN;;"
+			tranx_query = "BEGIN;"
 		}
 		return dbBegin(tranx_query)
 	} else {
-		return errors.New("ERR_DB_MULTIPLE_TRANSACTION")
+		return errors.New("ERR_DB_MULTIPLE_TRANSACTIONS")
 	}
+}
+
+func Commit() error {
+	_, err = dbExecute("COMMIT;")
+	if err != nil {
+		return err
+	}
+	isInTranx = false
+	return nil
 }

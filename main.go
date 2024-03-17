@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+	var err error
+
 	DBHOST := "moon"
 	DBUSER := "root"
 	DBPASSWORD := "zabbix"
@@ -15,7 +17,7 @@ func main() {
 	DBCONTIMEOUT := 1
 
 	//db connect
-	err := db.Connect_mysql(
+	err = db.Connect_mysql(
 		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
@@ -43,5 +45,11 @@ func main() {
 			fmt.Println("values:", values[2])
 			fmt.Println("values:", values[3])
 		}
+	}
+
+	//db begin
+	err = db.Begin()
+	if err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	}
 }

@@ -26,6 +26,8 @@ const (
 
 var db *sql.DB //no need
 var err error
+var isInTranx = false
+var dbType string
 
 func isDBinit() bool {
 	if db == nil {
@@ -53,7 +55,7 @@ func dbConnect(dbType string, dataSourceName string) error {
 }
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
-	dbType := MYSQL
+	dbType = MYSQL
 	if dbHost == "" {
 		dbHost = "localhost"
 	}
@@ -129,7 +131,7 @@ func Select(unfmt string, arg ...any) ([][]interface{}, error) {
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbSelect(query)
 	} else {
-		err = errors.New("ERR_DB_NOTINIT")
+		err = errors.New("ERR_DB_NOT_INIT")
 	}
 	return nil, err
 }
@@ -153,7 +155,30 @@ func Execute(unfmt string, arg ...any) (int64, error) {
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbExecute(query)
 	} else {
-		err = errors.New("ERR_DB_NOTINIT")
+		err = errors.New("ERR_DB_NOT_INIT")
 	}
 	return 0, err
+}
+
+func dbBegin(query string) error {
+	_, err := dbExecute(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func Begin() error {
+	var tranx_query string
+	if !isInTranx {
+		switch dbType {
+		case MYSQL:
+			tranx_query = "START TRANSACTION;"
+		case POSTGRESQL:
+			tranx_query = "BEGIN;;"
+		}
+		return dbBegin(tranx_query)
+	} else {
+		return errors.New("ERR_DB_MULTIPLE_TRANSACTION")
+	}
 }

@@ -14,11 +14,20 @@ func main() {
 	DBPORT := 0
 	DBCONTIMEOUT := 1
 
-	err := db.Connect_mysql(DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
+	err := db.Connect_mysql(
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
 	if err != nil {
-		fmt.Printf("We get error in connecting Database. Err: %s\n", err.Error())
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	} else {
 		fmt.Println("Connection Successful!")
+	}
+
+	effected_rows, err := db.Execute("INSERT  INTO test (id, title, artist, price) VALUES (%d, '%s', '%s', %d);",
+		119, "T_T", "me", 69)
+	if err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	} else {
+		fmt.Println("effected_rows:", effected_rows)
 	}
 
 	result, err := db.Select("select * from test;")

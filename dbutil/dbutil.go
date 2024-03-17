@@ -134,7 +134,7 @@ func Select(unfmt string, arg ...any) ([][]interface{}, error) {
 	return nil, err
 }
 
-func DBexec(query string) (int64, error) {
+func dbExecute(query string) (int64, error) {
 	result, err := db.Exec(query)
 	if err != nil {
 		return 0, err
@@ -146,4 +146,14 @@ func DBexec(query string) (int64, error) {
 	}
 
 	return affected_rows, err
+}
+
+func Execute(unfmt string, arg ...any) (int64, error) {
+	if isDBinit() {
+		query := fmt.Sprintf(unfmt, arg...)
+		return dbExecute(query)
+	} else {
+		err = errors.New("ERR_DB_NOTINIT")
+	}
+	return 0, err
 }

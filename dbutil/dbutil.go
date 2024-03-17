@@ -2,6 +2,7 @@ package dbutil
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -25,6 +26,14 @@ const (
 
 var db *sql.DB //no need
 var err error
+
+func isDBinit() bool {
+	if db == nil {
+		return false
+	} else {
+		return true
+	}
+}
 
 func dbPing() error {
 	err = db.Ping()
@@ -62,18 +71,18 @@ func Close() error {
 	return db.Close()
 }
 
-func Select(query string) ([][]interface{}, error) {
+func dbSelect(query string) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 
 	rows, err := db.Query(query)
 	if err != nil {
-		return row_values, err
+		return nil, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.ColumnTypes()
 	if err != nil {
-		return row_values, err
+		return nil, err
 	}
 
 	for rows.Next() {
@@ -102,10 +111,10 @@ func Select(query string) ([][]interface{}, error) {
 
 		err := rows.Scan(col_values...)
 		if err != nil {
-			return row_values, err
+			return nil, err
 		}
 
-		//parses to readable data types from interface
+		//parses memory addresses to values
 		for i := range col_values {
 			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
 		}
@@ -113,6 +122,16 @@ func Select(query string) ([][]interface{}, error) {
 		row_values = append(row_values, col_values)
 	}
 	return row_values, nil
+}
+
+func Select(unfmt string, arg ...any) ([][]interface{}, error) {
+	if isDBinit() {
+		query := fmt.Sprintf(unfmt, arg...)
+		return dbSelect(query)
+	} else {
+		err = errors.New("ERR_DB_NOTINIT")
+	}
+	return nil, err
 }
 
 func DBexec(query string) (int64, error) {

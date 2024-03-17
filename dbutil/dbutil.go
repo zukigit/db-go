@@ -192,3 +192,12 @@ func Commit() error {
 	isInTranx = false
 	return nil
 }
+
+func Rollback() error {
+	_, err = dbExecute("ROLLBACK;")
+	if err != nil {
+		return err
+	}
+	isInTranx = false
+	return nil
+}

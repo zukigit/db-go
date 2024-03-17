@@ -25,6 +25,11 @@ func main() {
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {
-		fmt.Println("Result:", result)
+		for _, values := range result {
+			fmt.Println("values:", values[0])
+			fmt.Println("values:", values[1])
+			fmt.Println("values:", values[2])
+			fmt.Println("values:", values[3])
+		}
 	}
 }

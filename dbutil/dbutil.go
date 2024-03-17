@@ -26,18 +26,21 @@ const (
 var db *sql.DB //no need
 var err error
 
-func DBconnect(dbType string, dataSourceName string) error {
+func dbPing() error {
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func dbConnect(dbType string, dataSourceName string) error {
 	db, err = sql.Open(dbType, dataSourceName)
 	if err != nil {
 		return err
 	}
 
-	err = db.Ping()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return dbPing()
 }
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
@@ -52,26 +55,24 @@ func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string,
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
 		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
 
-	return DBconnect(dbType, dataSourceName)
+	return dbConnect(dbType, dataSourceName)
 }
 
-func DBclose() error {
+func Close() error {
 	return db.Close()
 }
 
-func DBselect(query string) ([][]interface{}, error) {
+func Select(query string) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 
 	rows, err := db.Query(query)
 	if err != nil {
-		fmt.Printf("Query failed, ERROR: %s, QUERY: %s\n", err, query)
 		return row_values, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.ColumnTypes()
 	if err != nil {
-		fmt.Println("Can not get column types, ERROR:", err)
 		return row_values, err
 	}
 
@@ -101,7 +102,6 @@ func DBselect(query string) ([][]interface{}, error) {
 
 		err := rows.Scan(col_values...)
 		if err != nil {
-			fmt.Println("rows scan error, ERROR:", err)
 			return row_values, err
 		}
 
@@ -118,13 +118,11 @@ func DBselect(query string) ([][]interface{}, error) {
 func DBexec(query string) (int64, error) {
 	result, err := db.Exec(query)
 	if err != nil {
-		fmt.Println("db execution error:", err)
 		return 0, err
 	}
 
 	affected_rows, err := result.RowsAffected()
 	if err != nil {
-		fmt.Println("Can not get affected rows, error:", err)
 		return 0, err
 	}
 

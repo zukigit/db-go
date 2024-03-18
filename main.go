@@ -43,23 +43,23 @@ func main() {
 	}
 
 	//db execute
-	effected_rows, err = db.Execute("INSERT  INTO test (id, title, artist, price) VALUES (%d, '%s', '%s', %d);",
-		15, "T_T", "me", 69)
+	effected_rows, err := db.Execute("INSERT  INTO test (id, title, artist, price) VALUES (%d, '%s', '%s', %d);",
+		43, ":)))))", "me", 69)
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {
 		fmt.Println("effected_rows:", effected_rows)
 	}
 
-	//db rollback
-	err = db.Rollback()
-	if err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-	}
-
-	// //db commit
-	// err = db.Commit()
+	// //db rollback
+	// err = db.Rollback()
 	// if err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
 	// }
+
+	//db commit
+	err = db.Commit()
+	if err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	}
 }

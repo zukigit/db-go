@@ -184,7 +184,7 @@ func Begin() error {
 	}
 }
 
-func Commit() error {
+func dbCommit() error {
 	_, err = dbExecute("COMMIT;")
 	if err != nil {
 		return err
@@ -193,11 +193,27 @@ func Commit() error {
 	return nil
 }
 
-func Rollback() error {
+func Commit() error {
+	if isInTranx {
+		return dbCommit()
+	} else {
+		return errors.New("ERR_DB_HAS_NO_TRANSACTION")
+	}
+}
+
+func dbRollback() error {
 	_, err = dbExecute("ROLLBACK;")
 	if err != nil {
 		return err
 	}
 	isInTranx = false
 	return nil
+}
+
+func Rollback() error {
+	if isInTranx {
+		return dbRollback()
+	} else {
+		return errors.New("ERR_DB_HAS_NO_TRANSACTION")
+	}
 }

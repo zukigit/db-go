@@ -1,0 +1,23 @@
+@echo off
+setlocal
+
+set MAX_PROCESSES=100
+set PROCESSES_CREATED=0
+
+for /L %%i in (1,1,%MAX_PROCESSES%) do (
+    echo Starting process number: %%i
+    start /B cmd /c "echo Process %%i && timeout /t 10 > NUL"
+    if errorlevel 1 (
+        echo Failed to start process number: %%i
+        goto end
+    ) else (
+        set /a PROCESSES_CREATED+=1
+    )
+)
+
+:end
+echo.
+echo Finished. Total processes attempted to start: %MAX_PROCESSES%
+echo Processes successfully created: %PROCESSES_CREATED%
+endlocal
+pause

@@ -37,8 +37,7 @@ func main() {
 	}
 
 	//db begin
-	err = db.Begin()
-	if err != nil {
+	if err = db.Begin(); err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	}
 
@@ -52,14 +51,12 @@ func main() {
 	}
 
 	// //db rollback
-	// err = db.Rollback()
-	// if err != nil {
+	// if err = db.Rollback(); err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
 	// }
 
 	//db commit
-	err = db.Commit()
-	if err != nil {
+	if err = db.Commit(); err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	}
 }

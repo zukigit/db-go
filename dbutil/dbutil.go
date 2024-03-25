@@ -83,7 +83,7 @@ func dbSelect(query string) ([][]interface{}, error) {
 			case INT:
 				var temp_value int
 				col_values[i] = &temp_value
-			case BIGINT:
+			case BIGINT, UNSIGNED_BIGINT:
 				var temp_value int64
 				col_values[i] = &temp_value
 			case DECIMAL:
@@ -92,6 +92,8 @@ func dbSelect(query string) ([][]interface{}, error) {
 			case BOOL:
 				var temp_value bool
 				col_values[i] = &temp_value
+			default:
+				fmt.Println("Column type:", columns[i].DatabaseTypeName());
 			}
 		}
 

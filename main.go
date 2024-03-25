@@ -9,7 +9,7 @@ import (
 func main() {
 	var err error
 
-	DBHOST := "10.1.9.84"
+	DBHOST := "10.1.8.83"
 	DBUSER := "zabbix"
 	DBPASSWORD := "zabbix"
 	DBNAME := "zabbix"
@@ -24,15 +24,12 @@ func main() {
 	}
 
 	//db select
-	result, err := db.Select("select host from hosts;")
+	result, err := db.Select("select hostid from hosts;")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {
 		for _, values := range result {
 			fmt.Println("values:", values[0])
-			fmt.Println("values:", values[1])
-			fmt.Println("values:", values[2])
-			fmt.Println("values:", values[3])
 		}
 	}
 

@@ -15,6 +15,7 @@ const (
 	BOOL     = "BOOL"
 	INT      = "INT"
 	BIGINT   = "BIGINT"
+	UNSIGNED_BIGINT = "UNSIGNED BIGINT"
 )
 
 var Err_DB_NOT_INIT = errors.New("Err_DB_NOT_INIT")

@@ -2,7 +2,6 @@ package dbutil
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"reflect"
 
@@ -116,7 +115,7 @@ func Select(unfmt string, arg ...any) ([][]interface{}, error) {
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbSelect(query)
 	} else {
-		err = errors.New("ERR_DB_NOT_INIT")
+		err = Err_DB_NOT_INIT
 	}
 	return nil, err
 }
@@ -140,7 +139,7 @@ func Execute(unfmt string, arg ...any) (int64, error) {
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbExecute(query)
 	} else {
-		err = errors.New("ERR_DB_NOT_INIT")
+		err = Err_DB_NOT_INIT
 	}
 	return 0, err
 }
@@ -165,7 +164,7 @@ func Begin() error {
 		}
 		return dbBegin(tranx_query)
 	} else {
-		return errors.New("ERR_DB_MULTIPLE_TRANSACTIONS")
+		return Err_DB_MULTIPLE_TRANSACTIONS
 	}
 }
 
@@ -182,7 +181,7 @@ func Commit() error {
 	if isInTranx {
 		return dbCommit()
 	} else {
-		return errors.New("ERR_DB_HAS_NO_TRANSACTION")
+		return Err_DB_NO_TRANSACTION
 	}
 }
 
@@ -199,6 +198,6 @@ func Rollback() error {
 	if isInTranx {
 		return dbRollback()
 	} else {
-		return errors.New("ERR_DB_HAS_NO_TRANSACTION")
+		return Err_DB_NO_TRANSACTION
 	}
 }

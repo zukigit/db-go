@@ -99,7 +99,7 @@ func dbSelect(query string) ([][]interface{}, error) {
 				var temp_value uint16
 				col_values[i] = &temp_value
 			case MEDIUMINT:
-				var temp_value uint32
+				var temp_value int32
 				col_values[i] = &temp_value
 			case UNSIGNED_MEDIUMINT:
 				var temp_value uint32

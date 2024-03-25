@@ -1,9 +1,11 @@
 package dbutil
 
 const (
+	//db types
 	MYSQL      = "mysql"
 	POSTGRESQL = "postgres"
 
+	//data types
 	VARCHAR  = "VARCHAR"
 	TEXT     = "TEXT"
 	NVARCHAR = "NVARCHAR"

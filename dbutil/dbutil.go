@@ -83,8 +83,32 @@ func dbSelect(query string) ([][]interface{}, error) {
 			case INT:
 				var temp_value int
 				col_values[i] = &temp_value
-			case BIGINT, UNSIGNED_BIGINT:
+			case UNSIGNED_INT:
+				var temp_value uint
+				col_values[i] = &temp_value
+			case TINYINT:
+				var temp_value int8
+				col_values[i] = &temp_value
+			case UNSIGNED_TINYINT:
+				var temp_value uint8
+				col_values[i] = &temp_value
+			case SMALLINT:
+				var temp_value int16
+				col_values[i] = &temp_value
+			case UNSIGNED_SMALLINT:
+				var temp_value uint16
+				col_values[i] = &temp_value
+			case MEDIUMINT:
+				var temp_value uint32
+				col_values[i] = &temp_value
+			case UNSIGNED_MEDIUMINT:
+				var temp_value uint32
+				col_values[i] = &temp_value
+			case BIGINT:
 				var temp_value int64
+				col_values[i] = &temp_value
+			case UNSIGNED_BIGINT:
+				var temp_value uint64
 				col_values[i] = &temp_value
 			case DECIMAL:
 				var temp_value float64
@@ -93,7 +117,7 @@ func dbSelect(query string) ([][]interface{}, error) {
 				var temp_value bool
 				col_values[i] = &temp_value
 			default:
-				fmt.Println("Column type:", columns[i].DatabaseTypeName());
+				fmt.Println("Column type:", columns[i].DatabaseTypeName())
 			}
 		}
 

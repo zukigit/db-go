@@ -8,14 +8,21 @@ const (
 	POSTGRESQL = "postgres"
 
 	//data types
-	VARCHAR  = "VARCHAR"
-	TEXT     = "TEXT"
-	NVARCHAR = "NVARCHAR"
-	DECIMAL  = "DECIMAL"
-	BOOL     = "BOOL"
-	INT      = "INT"
-	BIGINT   = "BIGINT"
-	UNSIGNED_BIGINT = "UNSIGNED BIGINT"
+	VARCHAR            = "VARCHAR"
+	TEXT               = "TEXT"
+	NVARCHAR           = "NVARCHAR"
+	DECIMAL            = "DECIMAL"
+	BOOL               = "BOOL"
+	INT                = "INT"
+	UNSIGNED_INT       = "UNSIGNED INT"
+	TINYINT            = "TINYINT"
+	UNSIGNED_TINYINT   = "UNSIGNED TINYINT"
+	SMALLINT           = "SMALLINT"
+	UNSIGNED_SMALLINT  = "UNSIGNED SMALLINT"
+	MEDIUMINT          = "MEDIUMINT"
+	UNSIGNED_MEDIUMINT = "UNSIGNED MEDIUMINT"
+	BIGINT             = "BIGINT"
+	UNSIGNED_BIGINT    = "UNSIGNED BIGINT"
 )
 
 var Err_DB_NOT_INIT = errors.New("Err_DB_NOT_INIT")

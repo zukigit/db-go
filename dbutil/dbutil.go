@@ -9,21 +9,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	MYSQL      = "mysql"
-	POSTGRESQL = "postgres"
-)
-
-const (
-	VARCHAR  = "VARCHAR"
-	TEXT     = "TEXT"
-	NVARCHAR = "NVARCHAR"
-	DECIMAL  = "DECIMAL"
-	BOOL     = "BOOL"
-	INT      = "INT"
-	BIGINT   = "BIGINT"
-)
-
 var db *sql.DB //no need
 var err error
 var isInTranx = false

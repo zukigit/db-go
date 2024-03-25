@@ -9,10 +9,10 @@ import (
 func main() {
 	var err error
 
-	DBHOST := "moon"
-	DBUSER := "root"
+	DBHOST := "10.1.9.84"
+	DBUSER := "zabbix"
 	DBPASSWORD := "zabbix"
-	DBNAME := "test"
+	DBNAME := "zabbix"
 	DBPORT := 0
 	DBCONTIMEOUT := 1
 
@@ -24,7 +24,7 @@ func main() {
 	}
 
 	//db select
-	result, err := db.Select("select * from test;")
+	result, err := db.Select("select host from hosts;")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {

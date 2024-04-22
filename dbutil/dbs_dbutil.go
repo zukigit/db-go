@@ -7,8 +7,8 @@ import (
 
 type MysqlDatabase struct {
 	db        *sql.DB
-	err       error
-	isInTranx bool
+	err       *error
+	isInTranx *bool
 }
 
 type PsqlDatabase struct {
@@ -23,12 +23,12 @@ func (db MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error
 }
 
 func (db MysqlDatabase) Begin() error {
-	if !db.isInTranx {
-		if db.err = dbBegin("START TRANSACTION;"); db.err != nil {
-			db.isInTranx = true
+	if !*db.isInTranx {
+		if *db.err = dbBegin("START TRANSACTION;"); db.err != nil {
+			*db.isInTranx = true
 			return nil
 		} else {
-			return db.err
+			return *db.err
 		}
 	}
 	return Err_DB_MULTIPLE_TRANSACTIONS
@@ -39,7 +39,7 @@ func (mysql MysqlDatabase) Close() error {
 }
 
 func (db MysqlDatabase) Commit() error {
-	if db.isInTranx {
+	if *db.isInTranx {
 		return dbCommit()
 	} else {
 		return Err_DB_NO_TRANSACTION
@@ -55,7 +55,7 @@ func (db MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
 }
 
 func (db MysqlDatabase) Rollback() error {
-	if db.isInTranx {
+	if *db.isInTranx {
 		return dbRollback()
 	} else {
 		return Err_DB_NO_TRANSACTION

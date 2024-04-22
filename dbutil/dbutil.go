@@ -12,7 +12,6 @@ var db *sql.DB //no need
 var err error
 var isInTranx = false
 var dbType string
-var test Database
 
 type Database interface {
 	Select(unfmt string, arg ...any) ([][]interface{}, error)

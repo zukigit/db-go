@@ -12,15 +12,7 @@ var db *sql.DB //no need
 var err error
 var isInTranx = false
 var dbType string
-
-type Database interface {
-	Select(unfmt string, arg ...any) ([][]interface{}, error)
-	Execute(unfmt string, arg ...any) (int64, error)
-	Begin() error
-	Commit() error
-	Rollback() error
-	Close() error
-}
+var test Database
 
 func isDBinit() bool {
 	if db == nil {

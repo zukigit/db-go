@@ -1,1 +1,1 @@
-# Database utility library that supports dynamic data types
+# Database utility library that supports dynamic data types.

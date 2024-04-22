@@ -17,14 +17,13 @@ type Database interface {
 
 type MysqlDatabase struct {
 	db        *sql.DB
-	err       *error
 	isInTranx *bool
 }
 
-func (mysql MysqlDatabase) dbSelect(query string) ([][]interface{}, error) {
+func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 
-	rows, err := mysql.db.Query(query)
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -101,13 +100,91 @@ func (mysql MysqlDatabase) dbSelect(query string) ([][]interface{}, error) {
 }
 
 func (mysql MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error) {
-	if isDBinit() {
+	if mysql.db != nil { //check whether database is initialized or not
 		query := fmt.Sprintf(unfmt, arg...)
-		return mysql.dbSelect(query)
-	} else {
-		err = Err_DB_NOT_INIT
+		return dbSelect(query, mysql.db)
 	}
-	return nil, err
+	return nil, Err_DB_NOT_INIT
+}
+
+func dbExecute(query string, db *sql.DB) (int64, error) {
+	result, err := db.Exec(query)
+	if err != nil {
+		return 0, err
+	}
+
+	affected_rows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return affected_rows, err
+}
+
+func (mysql MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
+	if mysql.db != nil {
+		query := fmt.Sprintf(unfmt, arg...)
+		return dbExecute(query, mysql.db)
+	}
+	return 0, Err_DB_NOT_INIT
+}
+
+func dbBegin(query string, db *sql.DB) error {
+	_, err = dbExecute(query, db)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (mysql MysqlDatabase) Begin() error {
+	if !*mysql.isInTranx {
+		err := dbBegin("START TRANSACTION;", mysql.db)
+		if err == nil {
+			*mysql.isInTranx = true
+		}
+		return err
+	}
+	return Err_DB_MULTIPLE_TRANSACTIONS
+}
+
+func dbCommit(query string, db *sql.DB) error {
+	_, err = dbExecute(query, db)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (mysql MysqlDatabase) Commit() error {
+	if !*mysql.isInTranx {
+		err := dbCommit("COMMIT;", mysql.db)
+		if err == nil {
+			*mysql.isInTranx = false
+		}
+		return err
+	}
+	return Err_DB_NO_TRANSACTION
+}
+
+func dbRollback(query string, db *sql.DB) error {
+	_, err = dbExecute(query, db)
+	if err != nil {
+		return err
+	}
+	isInTranx = false
+	return nil
+}
+
+func (mysql MysqlDatabase) Rollback() error {
+	if !*mysql.isInTranx {
+		err := dbRollback("ROLLBACK;", mysql.db)
+		if err == nil {
+			*mysql.isInTranx = false
+		}
+		return err
+	}
+	return Err_DB_NO_TRANSACTION
 }
 
 func (mysql MysqlDatabase) Close() error {

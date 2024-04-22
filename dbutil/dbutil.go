@@ -12,6 +12,16 @@ var db *sql.DB //no need
 var err error
 var isInTranx = false
 var dbType string
+var test Database
+
+type Database interface {
+	Select(unfmt string, arg ...any) ([][]interface{}, error)
+	Execute(unfmt string, arg ...any) (int64, error)
+	Begin() error
+	Commit() error
+	Rollback() error
+	Close() error
+}
 
 func isDBinit() bool {
 	if db == nil {
@@ -30,8 +40,7 @@ func dbPing() error {
 }
 
 func dbConnect(dbType string, dataSourceName string) error {
-	db, err = sql.Open(dbType, dataSourceName)
-	if err != nil {
+	if db, err = sql.Open(dbType, dataSourceName); err != nil {
 		return err
 	}
 
@@ -175,7 +184,6 @@ func dbBegin(query string) error {
 	if err != nil {
 		return err
 	}
-	isInTranx = true
 	return nil
 }
 

@@ -24,7 +24,7 @@ func (db MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error
 
 func (db MysqlDatabase) Begin() error {
 	if !*db.isInTranx {
-		if *db.err = dbBegin("START TRANSACTION;"); db.err != nil {
+		if *db.err = dbBegin("START TRANSACTION; "); db.err != nil {
 			*db.isInTranx = true
 			return nil
 		} else {

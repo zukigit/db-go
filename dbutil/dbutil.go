@@ -191,7 +191,7 @@ func Begin() error {
 	if !isInTranx {
 		switch dbType {
 		case MYSQL:
-			tranx_query = "START TRANSACTION;"
+			tranx_query = "START TRANSACTION; "
 		case POSTGRESQL:
 			tranx_query = "BEGIN;"
 		}

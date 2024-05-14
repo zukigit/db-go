@@ -7,6 +7,8 @@ import (
 )
 
 type Database interface {
+	Connect() error
+	Ping() error
 	Select(unfmt string, arg ...any) ([][]interface{}, error)
 	Execute(unfmt string, arg ...any) (int64, error)
 	Begin() error
@@ -16,8 +18,30 @@ type Database interface {
 }
 
 type MysqlDatabase struct {
-	db        *sql.DB
-	isInTranx *bool
+	db             *sql.DB
+	isInTranx      *bool
+	dataSourceName string
+	err            error
+}
+
+func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
+	return &MysqlDatabase{dataSourceName: dataSourceName}
+}
+
+func (mysql MysqlDatabase) Ping() error {
+	mysql.err = mysql.db.Ping()
+	if mysql.err != nil {
+		return mysql.err
+	}
+	return nil
+}
+
+func (mysql MysqlDatabase) Connect() error {
+	if mysql.db, mysql.err = sql.Open("mysql", mysql.dataSourceName); mysql.err != nil {
+		return mysql.err
+	}
+
+	return mysql.Ping()
 }
 
 func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {

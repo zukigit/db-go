@@ -10,7 +10,6 @@ import (
 var db *sql.DB //no need
 var err error
 var dbType string
-var test Database
 
 func dbPing() error {
 	err = db.Ping()

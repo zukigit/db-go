@@ -9,17 +9,8 @@ import (
 
 var db *sql.DB //no need
 var err error
-var isInTranx = false
 var dbType string
 var test Database
-
-func isDBinit() bool {
-	if db == nil {
-		return false
-	} else {
-		return true
-	}
-}
 
 func dbPing() error {
 	err = db.Ping()

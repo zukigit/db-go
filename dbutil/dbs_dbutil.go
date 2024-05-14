@@ -172,7 +172,6 @@ func dbRollback(query string, db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-	isInTranx = false
 	return nil
 }
 

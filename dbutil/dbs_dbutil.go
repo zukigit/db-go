@@ -154,7 +154,7 @@ func (mysql MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
 }
 
 func dbBegin(query string, db *sql.DB) error {
-	_, err = dbExecute(query, db)
+	_, err := dbExecute(query, db)
 	if err != nil {
 		return err
 	}
@@ -173,7 +173,7 @@ func (mysql MysqlDatabase) Begin() error {
 }
 
 func dbCommit(query string, db *sql.DB) error {
-	_, err = dbExecute(query, db)
+	_, err := dbExecute(query, db)
 	if err != nil {
 		return err
 	}
@@ -192,7 +192,7 @@ func (mysql MysqlDatabase) Commit() error {
 }
 
 func dbRollback(query string, db *sql.DB) error {
-	_, err = dbExecute(query, db)
+	_, err := dbExecute(query, db)
 	if err != nil {
 		return err
 	}

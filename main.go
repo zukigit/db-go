@@ -1,25 +1,26 @@
 package main
 
-// import (
-// 	db "github.com/zukigit/db-go/dbutil"
-// )
+import (
+	"fmt"
+
+	db "github.com/zukigit/db-go/dbutil"
+)
 
 func main() {
-	// var err error
+	var err error
 
-	// DBHOST := ""
-	// DBUSER := "root"
-	// DBPASSWORD := "zabbix"
-	// DBNAME := "test_db"
-	// DBPORT := 0
-	// DBCONTIMEOUT := 1
+	DBHOST := ""
+	DBUSER := "root"
+	DBPASSWORD := "zabbix"
+	DBNAME := "test_db"
+	DBPORT := 0
+	DBCONTIMEOUT := 1
 
-	//db connect
-	// err = db.Connect_mysql(
-	// 	DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
-	// if err != nil {
-	// 	fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
-	// }
+	err = db.Connect_mysql(
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
+	if err != nil {
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	}
 
 	//db select
 	// result, err := db.Select("select title from album where id = '%d';", 1)

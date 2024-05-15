@@ -7,8 +7,6 @@ import (
 )
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
-	var err error
-
 	if dbHost == "" {
 		dbHost = "localhost"
 	}
@@ -20,7 +18,7 @@ func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string,
 		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
 
 	mysql := NewMysqlDatabase(dataSourceName)
-	err = mysql.Connect()
+	err := mysql.Connect()
 	if err != nil {
 		return err
 	}

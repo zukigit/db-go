@@ -6,7 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db Database
+var db *MysqlDatabase
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
 	if dbHost == "" {

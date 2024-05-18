@@ -22,10 +22,10 @@ func main() {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 
-	// err = db.Close()
-	// if err != nil {
-	// 	fmt.Printf("Error in closing Database. Err: %s\n", err.Error())
-	// }
+	err = db.Close()
+	if err != nil {
+		fmt.Printf("Error in closing Database. Err: %s\n", err.Error())
+	}
 
 	//db select
 	// result, err := db.Select("select title from album where id = '%d';", 1)

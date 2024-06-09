@@ -2,6 +2,7 @@ package dbutil
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"reflect"
 )
@@ -36,7 +37,7 @@ func (mysql MysqlDatabase) Ping() error {
 	return nil
 }
 
-func (mysql MysqlDatabase) Connect() error {
+func (mysql *MysqlDatabase) Connect() error {
 	if mysql.db, mysql.err = sql.Open("mysql", mysql.dataSourceName); mysql.err != nil {
 		return mysql.err
 	}
@@ -123,7 +124,7 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 	return row_values, nil
 }
 
-func (mysql MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error) {
+func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error) {
 	if mysql.db != nil { //check whether database is initialized or not
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbSelect(query, mysql.db)
@@ -145,7 +146,7 @@ func dbExecute(query string, db *sql.DB) (int64, error) {
 	return affected_rows, err
 }
 
-func (mysql MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
+func (mysql *MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
 	if mysql.db != nil {
 		query := fmt.Sprintf(unfmt, arg...)
 		return dbExecute(query, mysql.db)
@@ -161,7 +162,7 @@ func dbBegin(query string, db *sql.DB) error {
 	return nil
 }
 
-func (mysql MysqlDatabase) Begin() error {
+func (mysql *MysqlDatabase) Begin() error {
 	if !*mysql.isInTranx {
 		err := dbBegin("START TRANSACTION;", mysql.db)
 		if err == nil {
@@ -180,7 +181,7 @@ func dbCommit(query string, db *sql.DB) error {
 	return nil
 }
 
-func (mysql MysqlDatabase) Commit() error {
+func (mysql *MysqlDatabase) Commit() error {
 	if !*mysql.isInTranx {
 		err := dbCommit("COMMIT;", mysql.db)
 		if err == nil {
@@ -199,7 +200,7 @@ func dbRollback(query string, db *sql.DB) error {
 	return nil
 }
 
-func (mysql MysqlDatabase) Rollback() error {
+func (mysql *MysqlDatabase) Rollback() error {
 	if !*mysql.isInTranx {
 		err := dbRollback("ROLLBACK;", mysql.db)
 		if err == nil {
@@ -210,6 +211,10 @@ func (mysql MysqlDatabase) Rollback() error {
 	return Err_DB_NO_TRANSACTION
 }
 
-func (mysql MysqlDatabase) Close() error {
+func (mysql *MysqlDatabase) Close() error {
+	if mysql.db == nil {
+		fmt.Println("db is nill")
+		return errors.New("db is nill")
+	}
 	return mysql.db.Close()
 }

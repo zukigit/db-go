@@ -12,7 +12,7 @@ func main() {
 	DBHOST := ""
 	DBUSER := "root"
 	DBPASSWORD := "zabbix"
-	DBNAME := "test"
+	DBNAME := "zabbix"
 	DBPORT := 0
 	DBCONTIMEOUT := 1
 

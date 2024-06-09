@@ -6,7 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db *MysqlDatabase
+var db Database
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
 	if dbHost == "" {
@@ -18,14 +18,14 @@ func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string,
 
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
 		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
-	mysql := NewMysqlDatabase(dataSourceName)
+	mysqlDB := NewMysqlDatabase(dataSourceName)
 
-	err := mysql.Connect()
+	err := mysqlDB.Connect()
 	if err != nil {
 		return err
 	}
 
-	db = mysql
+	db = mysqlDB
 	return nil
 }
 

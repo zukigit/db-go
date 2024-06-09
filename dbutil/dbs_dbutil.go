@@ -45,6 +45,14 @@ func (mysql *MysqlDatabase) Connect() error {
 	return mysql.Ping()
 }
 
+func (mysql *MysqlDatabase) Close() error {
+	if mysql.db == nil {
+		fmt.Println("db is nill")
+		return errors.New("db is nill")
+	}
+	return mysql.db.Close()
+}
+
 func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 	row_values := make([][]interface{}, 0)
 
@@ -209,12 +217,4 @@ func (mysql *MysqlDatabase) Rollback() error {
 		return err
 	}
 	return Err_DB_NO_TRANSACTION
-}
-
-func (mysql *MysqlDatabase) Close() error {
-	if mysql.db == nil {
-		fmt.Println("db is nill")
-		return errors.New("db is nill")
-	}
-	return mysql.db.Close()
 }

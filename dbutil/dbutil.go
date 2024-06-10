@@ -30,6 +30,9 @@ func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string,
 }
 
 func Close() error {
+	if db == nil {
+		return Err_DB_NOT_INIT
+	}
 	return db.Close()
 }
 

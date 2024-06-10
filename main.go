@@ -24,7 +24,7 @@ func main() {
 
 	err = db.Close()
 	if err != nil {
-		fmt.Printf("Error in closing Database. Err: %s\n", err.Error())
+		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
 	}
 
 	//db select

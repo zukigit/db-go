@@ -7,12 +7,10 @@ const (
 	MYSQL      = "mysql"
 	POSTGRESQL = "postgres"
 
-	//data types
+	//column types
 	VARCHAR            = "VARCHAR"
-	TEXT               = "TEXT"
 	NVARCHAR           = "NVARCHAR"
-	DECIMAL            = "DECIMAL"
-	BOOL               = "BOOL"
+	TEXT               = "TEXT"
 	INT                = "INT"
 	UNSIGNED_INT       = "UNSIGNED INT"
 	TINYINT            = "TINYINT"
@@ -23,6 +21,26 @@ const (
 	UNSIGNED_MEDIUMINT = "UNSIGNED MEDIUMINT"
 	BIGINT             = "BIGINT"
 	UNSIGNED_BIGINT    = "UNSIGNED BIGINT"
+	DECIMAL            = "DECIMAL"
+	BOOL               = "BOOL"
+	FLOAT              = "FLOAT"
+	DOUBLE             = "DOUBLE"
+	DATE               = "DATE"
+	DATETIME           = "DATETIME"
+	TIMESTAMP          = "TIMESTAMP"
+	TIME               = "TIME"
+	YEAR               = "YEAR"
+	CHAR               = "CHAR"
+	BINARY             = "BINARY"
+	VARBINARY          = "VARBINARY"
+	BLOB               = "BLOB"
+	MEDIUMBLOB         = "MEDIUMBLOB"
+	LONGBLOB           = "LONGBLOB"
+	JSON               = "JSON"
+	ENUM               = "ENUM"
+	SET                = "SET"
+	POINT              = "POINT"
+	GEOMETRY           = "GEOMETRY"
 )
 
 var Err_DB_NOT_INIT = errors.New("Err_DB_NOT_INIT")

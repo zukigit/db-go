@@ -38,43 +38,43 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 		for i := range col_values {
 			switch columns[i].DatabaseTypeName() {
 			case VARCHAR, NVARCHAR, TEXT:
-				var temp_value string
+				var temp_value sql.NullString
 				col_values[i] = &temp_value
 			case INT:
-				var temp_value int
+				var temp_value *int
 				col_values[i] = &temp_value
 			case UNSIGNED_INT:
-				var temp_value uint
+				var temp_value *uint
 				col_values[i] = &temp_value
 			case TINYINT:
-				var temp_value int8
+				var temp_value *int8
 				col_values[i] = &temp_value
 			case UNSIGNED_TINYINT:
-				var temp_value uint8
+				var temp_value *uint8
 				col_values[i] = &temp_value
 			case SMALLINT:
-				var temp_value int16
+				var temp_value *int16
 				col_values[i] = &temp_value
 			case UNSIGNED_SMALLINT:
-				var temp_value uint16
+				var temp_value *uint16
 				col_values[i] = &temp_value
 			case MEDIUMINT:
-				var temp_value int32
+				var temp_value *int32
 				col_values[i] = &temp_value
 			case UNSIGNED_MEDIUMINT:
-				var temp_value uint32
+				var temp_value *uint32
 				col_values[i] = &temp_value
 			case BIGINT:
-				var temp_value int64
+				var temp_value *int64
 				col_values[i] = &temp_value
 			case UNSIGNED_BIGINT:
-				var temp_value uint64
+				var temp_value *uint64
 				col_values[i] = &temp_value
 			case DECIMAL:
-				var temp_value float64
+				var temp_value *float64
 				col_values[i] = &temp_value
 			case BOOL:
-				var temp_value bool
+				var temp_value *bool
 				col_values[i] = &temp_value
 			default:
 				fmt.Println("Column type:", columns[i].DatabaseTypeName())

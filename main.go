@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"reflect"
 
 	db "github.com/zukigit/db-go/dbutil"
 )
@@ -22,9 +24,15 @@ func main() {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 
-	_, err = db.Select("select * from hosts;")
+	result, err := db.Select("select  host from hosts h where hostid = %d;", 10050)
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	} else {
+		fmt.Println("result:", result)
+		for _, value := range result {
+			fmt.Println("values:", reflect.TypeOf(value[0]))
+			fmt.Println("values:", value[0].(sql.NullString).String)
+		}
 	}
 
 	err = db.Close()

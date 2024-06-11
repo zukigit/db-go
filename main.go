@@ -22,14 +22,14 @@ func main() {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 
+	_, err = db.Select("select * from hosts;")
+	if err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	}
+
 	err = db.Close()
 	if err != nil {
 		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
-	}
-
-	_, err = db.Select("")
-	if err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	}
 
 	//db select

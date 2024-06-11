@@ -13,7 +13,17 @@ type MysqlDatabase struct {
 	err            error
 }
 
-func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
+func NewMysqlDatabase(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) *MysqlDatabase {
+	if dbHost == "" {
+		dbHost = "localhost"
+	}
+	if dbPort == 0 {
+		dbPort = 3306
+	}
+
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
+		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
+
 	return &MysqlDatabase{dataSourceName: dataSourceName}
 }
 

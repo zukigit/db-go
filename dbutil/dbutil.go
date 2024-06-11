@@ -24,3 +24,10 @@ func Close() error {
 	}
 	return db.Close()
 }
+
+func Select(unfmt string, arg ...any) ([][]interface{}, error) {
+	if db == nil {
+		return nil, Err_DB_NOT_INIT
+	}
+	return db.Select(unfmt, arg...)
+}

@@ -78,6 +78,7 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 				col_values[i] = &temp_value
 			default:
 				fmt.Println("Column type:", columns[i].DatabaseTypeName())
+				return nil, Err_UNDEFINED_COLLUMN_TYPE
 			}
 		}
 

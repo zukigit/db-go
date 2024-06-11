@@ -2,7 +2,6 @@ package dbutil
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 )
 
@@ -44,10 +43,6 @@ func (mysql *MysqlDatabase) Connect() error {
 }
 
 func (mysql *MysqlDatabase) Close() error {
-	if mysql.db == nil {
-		fmt.Println("db is nill")
-		return errors.New("db is nill")
-	}
 	return mysql.db.Close()
 }
 

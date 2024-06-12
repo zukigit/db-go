@@ -36,16 +36,6 @@ func main() {
 		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
 	}
 
-	//db select
-	// result, err := db.Select("select title from album where id = '%d';", 1)
-	// if err != nil {
-	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
-	// } else {
-	// 	for _, values := range result {
-	// 		fmt.Println("values:", values[0])
-	// 	}
-	// }
-
 	//db begin
 	// if err = db.Begin(); err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())

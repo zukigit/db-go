@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"reflect"
+	"time"
 )
 
 type Database interface {
@@ -38,44 +39,37 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 		for i := range col_values {
 			switch columns[i].DatabaseTypeName() {
 			case VARCHAR, NVARCHAR, TEXT:
-				var temp_value *string
-				col_values[i] = &temp_value
+				col_values[i] = new(*string)
 			case INT:
-				var temp_value *int
-				col_values[i] = &temp_value
+				col_values[i] = new(*int)
 			case UNSIGNED_INT:
-				var temp_value *uint
-				col_values[i] = &temp_value
+				col_values[i] = new(*uint)
 			case TINYINT:
-				var temp_value *int8
-				col_values[i] = &temp_value
+				col_values[i] = new(*int8)
 			case UNSIGNED_TINYINT:
-				var temp_value *uint8
-				col_values[i] = &temp_value
+				col_values[i] = new(*uint8)
 			case SMALLINT:
-				var temp_value *int16
-				col_values[i] = &temp_value
+				col_values[i] = new(*int16)
 			case UNSIGNED_SMALLINT:
-				var temp_value *uint16
-				col_values[i] = &temp_value
+				col_values[i] = new(*uint16)
 			case MEDIUMINT:
-				var temp_value *int32
-				col_values[i] = &temp_value
+				col_values[i] = new(*int32)
 			case UNSIGNED_MEDIUMINT:
-				var temp_value *uint32
-				col_values[i] = &temp_value
+				col_values[i] = new(*uint32)
 			case BIGINT:
-				var temp_value *int64
-				col_values[i] = &temp_value
+				col_values[i] = new(*int64)
 			case UNSIGNED_BIGINT:
-				var temp_value *uint64
-				col_values[i] = &temp_value
+				col_values[i] = new(*uint64)
 			case DECIMAL:
-				var temp_value *float64
-				col_values[i] = &temp_value
+				col_values[i] = new(*float64)
 			case BOOL:
-				var temp_value *bool
-				col_values[i] = &temp_value
+				col_values[i] = new(*bool)
+			case DATE, DATETIME, TIMESTAMP, TIME, YEAR:
+				col_values[i] = new(*time.Time)
+			case BINARY, VARBINARY, BLOB, MEDIUMBLOB, LONGBLOB:
+				col_values[i] = new(*string)
+			case POINT, GEOMETRY:
+				col_values[i] = new(*string)
 			default:
 				fmt.Println("Column type:", columns[i].DatabaseTypeName())
 				return nil, Err_UNDEFINED_COLLUMN_TYPE

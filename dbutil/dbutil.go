@@ -31,3 +31,10 @@ func Select(unfmt string, arg ...any) ([][]interface{}, error) {
 	}
 	return db.Select(unfmt, arg...)
 }
+
+func Execute(unfmt string, arg ...any) (int64, error) {
+	if db == nil {
+		return 0, Err_DB_NOT_INIT
+	}
+	return db.Execute(unfmt, arg...)
+}

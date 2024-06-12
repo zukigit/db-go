@@ -32,23 +32,19 @@ func main() {
 		}
 	}
 
-	if err = db.Close(); err != nil {
-		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
-	}
-
 	//db begin
 	// if err = db.Begin(); err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
 	// }
 
 	//db execute
-	// effected_rows, err := db.Execute("INSERT  INTO album (id, title, artist, price) VALUES (%d, '%s', '%s', %d);",
-	// 	43, ":)))))", "me", 69)
-	// if err != nil {
-	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
-	// } else {
-	// 	fmt.Println("effected_rows:", effected_rows)
-	// }
+	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
+		17, "")
+	if err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	} else {
+		fmt.Println("effected_rows:", effected_rows)
+	}
 
 	// //db rollback
 	// if err = db.Rollback(); err != nil {
@@ -59,4 +55,8 @@ func main() {
 	// if err = db.Commit(); err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
 	// }
+
+	if err = db.Close(); err != nil {
+		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
+	}
 }

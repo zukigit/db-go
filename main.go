@@ -33,13 +33,13 @@ func main() {
 	}
 
 	//db begin
-	// if err = db.Begin(); err != nil {
-	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
-	// }
+	if err = db.Begin(); err != nil {
+		fmt.Printf("Query get failed, error: %s\n", err.Error())
+	}
 
 	//db execute
 	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
-		17, "")
+		18, "")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {

@@ -38,3 +38,24 @@ func Execute(unfmt string, arg ...any) (int64, error) {
 	}
 	return db.Execute(unfmt, arg...)
 }
+
+func Begin() error {
+	if db == nil {
+		return Err_DB_NOT_INIT
+	}
+	return db.Begin()
+}
+
+func Commit() error {
+	if db == nil {
+		return Err_DB_NOT_INIT
+	}
+	return db.Commit()
+}
+
+func Rollback() error {
+	if db == nil {
+		return Err_DB_NOT_INIT
+	}
+	return db.Rollback()
+}

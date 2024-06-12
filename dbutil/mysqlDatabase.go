@@ -22,8 +22,9 @@ func NewMysqlDatabase(dbHost string, dbUser string, dbPasswd string, dbName stri
 
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
 		dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
+	notInTranx := false
 
-	return &MysqlDatabase{dataSourceName: dataSourceName}
+	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}
 }
 
 func (mysql MysqlDatabase) Ping() error {
@@ -47,50 +48,53 @@ func (mysql *MysqlDatabase) Close() error {
 }
 
 func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error) {
-	if mysql.db != nil { //check whether database is initialized or not
-		query := fmt.Sprintf(unfmt, arg...)
-		return dbSelect(query, mysql.db)
+	if mysql.db == nil {
+		return nil, Err_DB_NOT_INIT
 	}
-	return nil, Err_DB_NOT_INIT
+	query := fmt.Sprintf(unfmt, arg...)
+	return dbSelect(query, mysql.db)
 }
 
 func (mysql *MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
-	if mysql.db != nil {
-		query := fmt.Sprintf(unfmt, arg...)
-		return dbExecute(query, mysql.db)
+	if mysql.db == nil {
+		return 0, Err_DB_NOT_INIT
 	}
-	return 0, Err_DB_NOT_INIT
+	query := fmt.Sprintf(unfmt, arg...)
+	return dbExecute(query, mysql.db)
 }
 
 func (mysql *MysqlDatabase) Begin() error {
-	if !*mysql.isInTranx {
-		err := dbBegin("START TRANSACTION;", mysql.db)
-		if err == nil {
-			*mysql.isInTranx = true
-		}
+	if *mysql.isInTranx {
+		return Err_DB_MULTIPLE_TRANSACTIONS
+	}
+	if _, err := Execute("START TRANSACTION;"); err != nil {
 		return err
 	}
-	return Err_DB_MULTIPLE_TRANSACTIONS
+
+	*mysql.isInTranx = true
+	return nil
 }
 
 func (mysql *MysqlDatabase) Commit() error {
 	if !*mysql.isInTranx {
-		err := dbCommit("COMMIT;", mysql.db)
-		if err == nil {
-			*mysql.isInTranx = false
-		}
+		return Err_DB_NO_TRANSACTION
+	}
+	if _, err := Execute("COMMIT;"); err != nil {
 		return err
 	}
-	return Err_DB_NO_TRANSACTION
+
+	*mysql.isInTranx = false
+	return nil
 }
 
 func (mysql *MysqlDatabase) Rollback() error {
 	if !*mysql.isInTranx {
-		err := dbRollback("ROLLBACK;", mysql.db)
-		if err == nil {
-			*mysql.isInTranx = false
-		}
+		return Err_DB_NO_TRANSACTION
+	}
+	if _, err := Execute("ROLLBACK;"); err != nil {
 		return err
 	}
-	return Err_DB_NO_TRANSACTION
+
+	*mysql.isInTranx = false
+	return nil
 }

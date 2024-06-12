@@ -104,27 +104,3 @@ func dbExecute(query string, db *sql.DB) (int64, error) {
 
 	return affected_rows, err
 }
-
-func dbBegin(query string, db *sql.DB) error {
-	_, err := dbExecute(query, db)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func dbCommit(query string, db *sql.DB) error {
-	_, err := dbExecute(query, db)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func dbRollback(query string, db *sql.DB) error {
-	_, err := dbExecute(query, db)
-	if err != nil {
-		return err
-	}
-	return nil
-}

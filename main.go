@@ -1,9 +1,7 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"reflect"
 
 	db "github.com/zukigit/db-go/dbutil"
 )
@@ -30,13 +28,11 @@ func main() {
 	} else {
 		fmt.Println("result:", result)
 		for _, value := range result {
-			fmt.Println("values:", reflect.TypeOf(value[0]))
-			fmt.Println("values:", value[0].(sql.NullString).String)
+			fmt.Println(*value[0].(*string))
 		}
 	}
 
-	err = db.Close()
-	if err != nil {
+	if err = db.Close(); err != nil {
 		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
 	}
 

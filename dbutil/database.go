@@ -38,7 +38,7 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 		for i := range col_values {
 			switch columns[i].DatabaseTypeName() {
 			case VARCHAR, NVARCHAR, TEXT:
-				var temp_value sql.NullString
+				var temp_value *string
 				col_values[i] = &temp_value
 			case INT:
 				var temp_value *int

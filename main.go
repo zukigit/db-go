@@ -28,7 +28,7 @@ func main() {
 	} else {
 		fmt.Println("result:", result)
 		for _, value := range result {
-			fmt.Println(*value[0].(*string))
+			fmt.Println(db.ResultToString(value))
 		}
 	}
 

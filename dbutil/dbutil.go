@@ -8,8 +8,18 @@ import (
 
 var db Database
 
-func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int) error {
+func Connect_mysql_manual(dataSourceName string) error {
+	mysqlDB := NewMysqlDatabase(dataSourceName)
 
+	if err := mysqlDB.Connect(); err != nil {
+		return err
+	}
+
+	db = mysqlDB
+	return nil
+}
+
+func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int) error {
 	if dbPort != 0 {
 		dbHost = fmt.Sprintf("%s:%d", dbHost, dbPort)
 	}
@@ -23,13 +33,7 @@ func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string,
 	}
 	dataSourceName := cfg.FormatDSN()
 
-	mysqlDB := NewMysqlDatabase(dataSourceName)
-	if err := mysqlDB.Connect(); err != nil {
-		return err
-	}
-
-	db = mysqlDB
-	return nil
+	return Connect_mysql_manual(dataSourceName)
 }
 
 func Close() error {

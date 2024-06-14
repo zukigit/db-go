@@ -3,20 +3,34 @@ package main
 import (
 	"fmt"
 
+	"github.com/go-sql-driver/mysql"
 	db "github.com/zukigit/db-go/dbutil"
 )
 
 func main() {
 	var err error
 
-	DBHOST := ""
-	DBUSER := "root"
-	DBPASSWORD := "zabbix"
-	DBNAME := "zabbix"
-	DBPORT := 3306
+	// DBHOST := ""
+	// DBUSER := "root"
+	// DBPASSWORD := "zabbix"
+	// DBNAME := "zabbix"
+	// DBPORT := 3306
 
-	err = db.Connect_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
+	// err = db.Connect_mysql(
+	// 	DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
+	// if err != nil {
+	// 	fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	// }
+
+	//connect manually
+	cfg := mysql.Config{
+		User:   "zabbix",
+		Passwd: "zabbix",
+		Net:    "tcp",
+		Addr:   "",
+		DBName: "zabbix",
+	}
+	err = db.Connect_mysql_manual(cfg.FormatDSN())
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}

@@ -2,15 +2,12 @@ package dbutil
 
 import (
 	"database/sql"
-	"fmt"
-	"reflect"
-	"time"
 )
 
 type Database interface {
 	Connect() error
 	Ping() error
-	Select(unfmt string, arg ...any) ([][]interface{}, error)
+	Select(unfmt string, arg ...any) ([][]string, error)
 	Execute(unfmt string, arg ...any) (int64, error)
 	Begin() error
 	Commit() error
@@ -18,8 +15,8 @@ type Database interface {
 	Close() error
 }
 
-func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
-	row_values := make([][]interface{}, 0)
+func dbSelect(query string, db *sql.DB) ([][]string, error) {
+	row_values := make([][]string, 0)
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -33,47 +30,11 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 	}
 
 	for rows.Next() {
-		col_values := make([]interface{}, len(columns))
+		col_values := make([]any, len(columns))
+		string_values := make([]string, len(columns))
 
-		//defines col_values' types
 		for i := range col_values {
-			switch columns[i].DatabaseTypeName() {
-			case VARCHAR, NVARCHAR, TEXT:
-				col_values[i] = new(*string)
-			case INT:
-				col_values[i] = new(*int)
-			case UNSIGNED_INT:
-				col_values[i] = new(*uint)
-			case TINYINT:
-				col_values[i] = new(*int8)
-			case UNSIGNED_TINYINT:
-				col_values[i] = new(*uint8)
-			case SMALLINT:
-				col_values[i] = new(*int16)
-			case UNSIGNED_SMALLINT:
-				col_values[i] = new(*uint16)
-			case MEDIUMINT:
-				col_values[i] = new(*int32)
-			case UNSIGNED_MEDIUMINT:
-				col_values[i] = new(*uint32)
-			case BIGINT:
-				col_values[i] = new(*int64)
-			case UNSIGNED_BIGINT:
-				col_values[i] = new(*uint64)
-			case DECIMAL:
-				col_values[i] = new(*float64)
-			case BOOL:
-				col_values[i] = new(*bool)
-			case DATE, DATETIME, TIMESTAMP, TIME, YEAR:
-				col_values[i] = new(*time.Time)
-			case BINARY, VARBINARY, BLOB, MEDIUMBLOB, LONGBLOB:
-				col_values[i] = new(*string)
-			case POINT, GEOMETRY:
-				col_values[i] = new(*string)
-			default:
-				fmt.Println("Column type:", columns[i].DatabaseTypeName())
-				return nil, Err_UNDEFINED_COLLUMN_TYPE
-			}
+			col_values[i] = new(sql.NullString)
 		}
 
 		err := rows.Scan(col_values...)
@@ -81,12 +42,11 @@ func dbSelect(query string, db *sql.DB) ([][]interface{}, error) {
 			return nil, err
 		}
 
-		//parses memory addresses to values
-		for i := range col_values {
-			col_values[i] = reflect.Indirect(reflect.ValueOf(col_values[i])).Interface()
+		for i, value := range col_values {
+			string_values[i] = value.(*sql.NullString).String
 		}
 
-		row_values = append(row_values, col_values)
+		row_values = append(row_values, string_values)
 	}
 	return row_values, nil
 }

@@ -23,28 +23,29 @@ func main() {
 	}
 
 	result, err := db.Select("select  host from hosts h where hostid = %d;", 10050)
+	// result, err := db.Select("select  * from hosts;")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {
 		fmt.Println("result:", result)
-		for _, value := range result {
-			fmt.Println(db.ResultToString(value))
-		}
+		// for _, value := range result {
+		// 	fmt.Println(db.ResultToString(value))
+		// }
 	}
 
 	//db begin
-	if err = db.Begin(); err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-	}
+	// if err = db.Begin(); err != nil {
+	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
+	// }
 
 	//db execute
-	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
-		18, "")
-	if err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-	} else {
-		fmt.Println("effected_rows:", effected_rows)
-	}
+	// effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
+	// 	18, "")
+	// if err != nil {
+	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
+	// } else {
+	// 	fmt.Println("effected_rows:", effected_rows)
+	// }
 
 	// //db rollback
 	// if err = db.Rollback(); err != nil {

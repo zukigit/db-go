@@ -47,7 +47,7 @@ func (mysql *MysqlDatabase) Close() error {
 	return mysql.db.Close()
 }
 
-func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]interface{}, error) {
+func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]string, error) {
 	if mysql.db == nil {
 		return nil, Err_DB_NOT_INIT
 	}

@@ -25,7 +25,7 @@ func Close() error {
 	return db.Close()
 }
 
-func Select(unfmt string, arg ...any) ([][]interface{}, error) {
+func Select(unfmt string, arg ...any) ([][]string, error) {
 	if db == nil {
 		return nil, Err_DB_NOT_INIT
 	}

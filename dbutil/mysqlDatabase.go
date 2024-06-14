@@ -14,7 +14,6 @@ type MysqlDatabase struct {
 
 func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 	notInTranx := false
-
 	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}
 }
 
@@ -23,6 +22,7 @@ func (mysql MysqlDatabase) Ping() error {
 	if mysql.err != nil {
 		return mysql.err
 	}
+
 	return nil
 }
 
@@ -43,6 +43,7 @@ func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]string, error)
 		return nil, Err_DB_NOT_INIT
 	}
 	query := fmt.Sprintf(unfmt, arg...)
+
 	return dbSelect(query, mysql.db)
 }
 
@@ -51,6 +52,7 @@ func (mysql *MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
 		return 0, Err_DB_NOT_INIT
 	}
 	query := fmt.Sprintf(unfmt, arg...)
+
 	return dbExecute(query, mysql.db)
 }
 

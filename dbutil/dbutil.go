@@ -1,9 +1,5 @@
 package dbutil
 
-import (
-	_ "github.com/go-sql-driver/mysql"
-)
-
 var db Database
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {

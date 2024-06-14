@@ -3,6 +3,8 @@ package dbutil
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type MysqlDatabase struct {

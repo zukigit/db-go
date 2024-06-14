@@ -1,11 +1,34 @@
 package dbutil
 
+import (
+	"fmt"
+	"time"
+
+	"github.com/go-sql-driver/mysql"
+)
+
 var db Database
 
 func Connect_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) error {
+	var addr string
+	if dbHost != "" {
+		addr = dbHost
+	}
+	if dbPort != 0 {
+		addr = fmt.Sprintf("%s:%d", addr, dbPort)
+	}
 
-	mysqlDB := NewMysqlDatabase(dbHost, dbUser, dbPasswd, dbName, dbPort, dbTimeoutInSec)
+	cfg := mysql.Config{
+		User:    dbUser,
+		Passwd:  dbPasswd,
+		Net:     "tcp",
+		Addr:    addr,
+		DBName:  dbName,
+		Timeout: time.Duration(dbTimeoutInSec) * time.Second,
+	}
+	dataSourceName := cfg.FormatDSN()
 
+	mysqlDB := NewMysqlDatabase(dataSourceName)
 	if err := mysqlDB.Connect(); err != nil {
 		return err
 	}

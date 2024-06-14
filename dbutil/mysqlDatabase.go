@@ -3,9 +3,6 @@ package dbutil
 import (
 	"database/sql"
 	"fmt"
-	"time"
-
-	"github.com/go-sql-driver/mysql"
 )
 
 type MysqlDatabase struct {
@@ -15,17 +12,7 @@ type MysqlDatabase struct {
 	err            error
 }
 
-func NewMysqlDatabase(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, dbTimeoutInSec int) *MysqlDatabase {
-	// dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%ds",
-	// 	dbUser, dbPasswd, dbHost, dbPort, dbName, dbTimeoutInSec)
-	cfg := mysql.Config{
-		User:    dbUser,
-		Passwd:  dbPasswd,
-		Addr:    "10.1.9.30:80",
-		DBName:  "zabbix",
-		Timeout: time.Duration(dbTimeoutInSec) * time.Second,
-	}
-	dataSourceName := cfg.FormatDSN()
+func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 	notInTranx := false
 
 	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}

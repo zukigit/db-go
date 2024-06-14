@@ -13,17 +13,15 @@ func main() {
 	DBUSER := "root"
 	DBPASSWORD := "zabbix"
 	DBNAME := "zabbix"
-	DBPORT := 0
-	DBCONTIMEOUT := 1
+	DBPORT := 3306
 
 	err = db.Connect_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, DBCONTIMEOUT)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 
 	result, err := db.Select("select  host from hosts h where hostid = %d;", 10050)
-	// result, err := db.Select("select  * from hosts;")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {

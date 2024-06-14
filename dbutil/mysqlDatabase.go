@@ -27,6 +27,7 @@ func (mysql MysqlDatabase) Ping() error {
 }
 
 func (mysql *MysqlDatabase) Connect() error {
+	fmt.Println("datasource:", mysql.dataSourceName)
 	if mysql.db, mysql.err = sql.Open("mysql", mysql.dataSourceName); mysql.err != nil {
 		return mysql.err
 	}

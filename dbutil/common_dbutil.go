@@ -43,7 +43,6 @@ const (
 	GEOMETRY           = "GEOMETRY"
 )
 
-var Err_DB_NOT_INIT = errors.New("Err_DB_NOT_INIT")
-var Err_DB_MULTIPLE_TRANSACTIONS = errors.New("Err_DB_MULTIPLE_TRANSACTIONS")
-var Err_DB_NO_TRANSACTION = errors.New("Err_DB_NO_TRANSACTION")
-var Err_UNDEFINED_COLLUMN_TYPE = errors.New("Err_UNDEFINED_COLLUMN_TYPE")
+var Err_DB_NOT_INIT = errors.New("database is not initialized, use Connect_() first")
+var Err_DB_MULTIPLE_TRANSACTIONS = errors.New("doesn't not support multile transaction, you have to close one transaction using Close()")
+var Err_DB_NO_TRANSACTION = errors.New("no transaction is detected, use begin() to start the transaction")

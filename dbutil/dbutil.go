@@ -9,8 +9,11 @@ import (
 var db Database
 
 func Connect_mysql(dataSourceName string) error {
-	mysqlDB := NewMysqlDatabase(dataSourceName)
+	if db != nil {
+		return Err_DB_MULTIPLE_INIT
+	}
 
+	mysqlDB := NewMysqlDatabase(dataSourceName)
 	if err := mysqlDB.Connect(); err != nil {
 		return err
 	}
@@ -38,7 +41,11 @@ func Close() error {
 	if db == nil {
 		return Err_DB_NOT_INIT
 	}
-	return db.Close()
+	if err := db.Close(); err != nil {
+		return err
+	}
+	db = nil
+	return nil
 }
 
 func Select(unfmt string, arg ...any) ([][]string, error) {

@@ -62,9 +62,9 @@ func main() {
 	}
 
 	// //db rollback
-	if err = db.Rollback(); err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-	}
+	// if err = db.Rollback(); err != nil {
+	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
+	// }
 
 	// //close database connection
 	if err = db.Close(); err != nil {

@@ -106,12 +106,3 @@ func Rollback() error {
 	}
 	return db.Rollback()
 }
-
-// will get failed if you using []interface{} instead of interface{}
-func ResultToString(i interface{}) string {
-	str, ok := i.(*string)
-	if !ok {
-		return "FAILED"
-	}
-	return *str
-}

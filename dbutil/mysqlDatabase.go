@@ -9,7 +9,15 @@ type MysqlDatabase struct {
 	db             *sql.DB
 	isInTranx      *bool
 	dataSourceName string
-	err            error
+
+	// the maximum number of connections in the pool
+	// maxConnections int
+
+	// the current number of connections in the pool
+	// numConnections int
+
+	// the mutex to synchronize access to the connection pool
+	// mutex *sync.Mutex
 }
 
 func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
@@ -18,19 +26,21 @@ func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 }
 
 func (mysql MysqlDatabase) Ping() error {
-	mysql.err = mysql.db.Ping()
-	if mysql.err != nil {
-		return mysql.err
+	err := mysql.db.Ping()
+	if err != nil {
+		return err
 	}
 
 	return nil
 }
 
 func (mysql *MysqlDatabase) Connect() error {
-	if mysql.db, mysql.err = sql.Open("mysql", mysql.dataSourceName); mysql.err != nil {
-		return mysql.err
+	mysqlDB, err := sql.Open("mysql", mysql.dataSourceName)
+	if err != nil {
+		return err
 	}
 
+	mysql.db = mysqlDB
 	return mysql.Ping()
 }
 

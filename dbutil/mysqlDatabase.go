@@ -11,7 +11,7 @@ type MysqlDatabase struct {
 	dataSourceName string
 
 	// the maximum number of connections in the pool
-	// maxConnections int
+	maxConnections int
 
 	// the current number of connections in the pool
 	// numConnections int
@@ -25,7 +25,14 @@ func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}
 }
 
-func (mysql MysqlDatabase) Ping() error {
+func GetMysqlConPool(dataSourceName string, maxConnections int) *MysqlDatabase {
+	mysqlDB := NewMysqlDatabase(dataSourceName)
+	mysqlDB.maxConnections = maxConnections
+
+	return mysqlDB
+}
+
+func (mysql *MysqlDatabase) Ping() error {
 	err := mysql.db.Ping()
 	if err != nil {
 		return err

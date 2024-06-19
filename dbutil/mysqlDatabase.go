@@ -22,6 +22,7 @@ type MysqlDatabase struct {
 
 func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 	notInTranx := false
+
 	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}
 }
 
@@ -30,6 +31,11 @@ func GetMysqlConPool(dataSourceName string, maxConnections int) *MysqlDatabase {
 	mysqlDB.maxConnections = maxConnections
 
 	return mysqlDB
+}
+
+func (mysql *MysqlDatabase) IsConAvaliable() bool {
+
+	return false
 }
 
 func (mysql *MysqlDatabase) Ping() error {
@@ -46,12 +52,15 @@ func (mysql *MysqlDatabase) Connect() error {
 	if err != nil {
 		return err
 	}
-
 	mysql.db = mysqlDB
+
 	return mysql.Ping()
 }
 
 func (mysql *MysqlDatabase) Close() error {
+	if mysql.db == nil {
+		return Err_DB_NOT_INIT
+	}
 	return mysql.db.Close()
 }
 
@@ -80,8 +89,8 @@ func (mysql *MysqlDatabase) Begin() error {
 	if _, err := Execute("START TRANSACTION;"); err != nil {
 		return err
 	}
-
 	*mysql.isInTranx = true
+
 	return nil
 }
 
@@ -92,8 +101,8 @@ func (mysql *MysqlDatabase) Commit() error {
 	if _, err := Execute("COMMIT;"); err != nil {
 		return err
 	}
-
 	*mysql.isInTranx = false
+
 	return nil
 }
 
@@ -104,7 +113,7 @@ func (mysql *MysqlDatabase) Rollback() error {
 	if _, err := Execute("ROLLBACK;"); err != nil {
 		return err
 	}
-
 	*mysql.isInTranx = false
+
 	return nil
 }

@@ -32,11 +32,11 @@ func main() {
 		Addr:   "",
 		DBName: "zabbix",
 	}
-	err = db.Connect_mysql(cfg.FormatDSN())
-	if err != nil {
-		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
-	}
+	db.Init_mysql(cfg.FormatDSN())
 
+	if err := db.Connect(); err != nil {
+		fmt.Printf("Connection failed, error: %s\n", err.Error())
+	}
 	// //db select
 	result, err := db.Select("select  host from hosts h where hostid = %d;", 10050)
 	if err != nil {

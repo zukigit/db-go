@@ -59,14 +59,14 @@ func (mysql *MysqlDatabase) Connect() error {
 
 func (mysql *MysqlDatabase) Close() error {
 	if mysql.db == nil {
-		return Err_DB_NOT_INIT
+		return Err_DB_NOT_CONNECTED
 	}
 	return mysql.db.Close()
 }
 
 func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]string, error) {
 	if mysql.db == nil {
-		return nil, Err_DB_NOT_INIT
+		return nil, Err_DB_NOT_CONNECTED
 	}
 	query := fmt.Sprintf(unfmt, arg...)
 
@@ -75,7 +75,7 @@ func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]string, error)
 
 func (mysql *MysqlDatabase) Execute(unfmt string, arg ...any) (int64, error) {
 	if mysql.db == nil {
-		return 0, Err_DB_NOT_INIT
+		return 0, Err_DB_NOT_CONNECTED
 	}
 	query := fmt.Sprintf(unfmt, arg...)
 

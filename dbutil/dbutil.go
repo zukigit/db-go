@@ -8,23 +8,17 @@ import (
 
 var db Database
 
-/*
-Purpose: This function creates a connection with mysql and stored it.
+func Init_mysql(dataSourceName string) {
+	fmt.Println(dataSourceName)
+	db = NewMysqlDatabase(dataSourceName)
+}
 
-Parameters: dataSourceName - it can be generated using Get_mysql_DSN() or mysql.Config{}.FormatDSN().
-*/
-func Connect_mysql(dataSourceName string) error {
-	if db != nil {
-		return Err_DB_MULTIPLE_INIT
+// Purpose: This function creates a connection with mysql and stored it.
+func Connect() error {
+	if db == nil {
+		return Err_DB_NOT_INIT
 	}
-
-	mysqlDB := NewMysqlDatabase(dataSourceName)
-	if err := mysqlDB.Connect(); err != nil {
-		return err
-	}
-
-	db = mysqlDB
-	return nil
+	return db.Connect()
 }
 
 /*
@@ -56,11 +50,8 @@ func Close() error {
 	if db == nil {
 		return Err_DB_NOT_INIT
 	}
-	if err := db.Close(); err != nil {
-		return err
-	}
-	db = nil
-	return nil
+
+	return db.Close()
 }
 
 // Purpose: This function executes a SELECT query on the database and returns the result as a matrix (a table of rows and columns).

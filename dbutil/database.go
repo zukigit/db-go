@@ -5,7 +5,7 @@ import (
 )
 
 type Database interface {
-	Connect() error
+	Connect() (Database, error)
 	Ping() error
 	Select(unfmt string, arg ...any) ([][]string, error)
 	Execute(unfmt string, arg ...any) (int64, error)

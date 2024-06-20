@@ -11,7 +11,7 @@ type MysqlDatabase struct {
 	dataSourceName string
 
 	// the maximum number of connections in the pool
-	maxConnections int
+	// maxConnections int
 
 	// the current number of connections in the pool
 	// numConnections int
@@ -21,21 +21,7 @@ type MysqlDatabase struct {
 }
 
 func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
-	notInTranx := false
-
-	return &MysqlDatabase{dataSourceName: dataSourceName, isInTranx: &notInTranx}
-}
-
-func GetMysqlConPool(dataSourceName string, maxConnections int) *MysqlDatabase {
-	mysqlDB := NewMysqlDatabase(dataSourceName)
-	mysqlDB.maxConnections = maxConnections
-
-	return mysqlDB
-}
-
-func (mysql *MysqlDatabase) IsConAvaliable() bool {
-
-	return false
+	return &MysqlDatabase{dataSourceName: dataSourceName}
 }
 
 func (mysql *MysqlDatabase) Ping() error {
@@ -47,14 +33,17 @@ func (mysql *MysqlDatabase) Ping() error {
 	return nil
 }
 
-func (mysql *MysqlDatabase) Connect() error {
-	mysqlDB, err := sql.Open("mysql", mysql.dataSourceName)
+func (mysql *MysqlDatabase) Connect() (Database, error) {
+	notInTranx := false
+	sqlDB, err := sql.Open("mysql", mysql.dataSourceName)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	mysql.db = mysqlDB
 
-	return mysql.Ping()
+	return &MysqlDatabase{
+		db:        sqlDB,
+		isInTranx: &notInTranx,
+	}, nil
 }
 
 func (mysql *MysqlDatabase) Close() error {
@@ -86,7 +75,7 @@ func (mysql *MysqlDatabase) Begin() error {
 	if *mysql.isInTranx {
 		return Err_DB_MULTIPLE_TRANSACTIONS
 	}
-	if _, err := Execute("START TRANSACTION;"); err != nil {
+	if _, err := mysql.Execute("START TRANSACTION;"); err != nil {
 		return err
 	}
 	*mysql.isInTranx = true
@@ -98,7 +87,7 @@ func (mysql *MysqlDatabase) Commit() error {
 	if !*mysql.isInTranx {
 		return Err_DB_NO_TRANSACTION
 	}
-	if _, err := Execute("COMMIT;"); err != nil {
+	if _, err := mysql.Execute("COMMIT;"); err != nil {
 		return err
 	}
 	*mysql.isInTranx = false
@@ -110,7 +99,7 @@ func (mysql *MysqlDatabase) Rollback() error {
 	if !*mysql.isInTranx {
 		return Err_DB_NO_TRANSACTION
 	}
-	if _, err := Execute("ROLLBACK;"); err != nil {
+	if _, err := mysql.Execute("ROLLBACK;"); err != nil {
 		return err
 	}
 	*mysql.isInTranx = false

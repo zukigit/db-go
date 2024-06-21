@@ -8,6 +8,10 @@ import (
 
 var TEMP_DB Database
 
+func Init_mysql_DSN(dsn string) {
+	TEMP_DB = NewMysqlDatabase(dsn)
+}
+
 func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int) {
 	if dbPort != 0 {
 		dbHost = fmt.Sprintf("%s:%d", dbHost, dbPort)

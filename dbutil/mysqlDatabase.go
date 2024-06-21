@@ -35,8 +35,13 @@ func (mysql *MysqlDatabase) Ping() error {
 
 func (mysql *MysqlDatabase) Connect() (Database, error) {
 	notInTranx := false
+
 	sqlDB, err := sql.Open("mysql", mysql.dataSourceName)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := sqlDB.Ping(); err != nil {
 		return nil, err
 	}
 

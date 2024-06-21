@@ -6,11 +6,12 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
+// Stores Database object temporarily.
 var TEMP_DB Database
 
 // This function needs to be called only once unless you want to change the database configuration again.
 // This function stores a MySQL DataSourceName using the provided DataSourceName temporarily.
-// You can read how to generate DataSourceName [here]: https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN
+// You can read how to generate DataSourceName here: [https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN].
 func Init_mysql_DSN(dataSourceName string) {
 	TEMP_DB = NewMysqlDatabase(dataSourceName)
 }
@@ -37,7 +38,7 @@ func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, db
 
 // This function establishes a connection to the database and returns [dbutil.Database].
 // With that [dbutil.Database], You can use [Database.Select] or any other utility functions.
-// It utilizes [dbutil.TEMP_DB] that must be initialized by calling [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] first.
+// [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] must be called first to use this function.
 func Connect() (Database, error) {
 	if TEMP_DB == nil {
 		return nil, Err_DB_NOT_INIT

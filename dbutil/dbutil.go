@@ -6,7 +6,6 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-// Store database object temporarily
 var TEMP_DB Database
 
 // This function needs to be called only once unless you want to change the database configuration again.

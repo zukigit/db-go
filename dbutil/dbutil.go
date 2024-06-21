@@ -35,6 +35,8 @@ func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, db
 	TEMP_DB = NewMysqlDatabase(cfg.FormatDSN())
 }
 
+// This function establishes a connection to the database and returns [dbutil.Database].
+// It utilizes [dbutil.TEMP_DB] that must be initialized by calling [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] first.
 func Connect() (Database, error) {
 	if TEMP_DB == nil {
 		return nil, Err_DB_NOT_INIT

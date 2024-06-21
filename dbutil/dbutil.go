@@ -6,12 +6,15 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
+// Store database object temporarily
 var TEMP_DB Database
 
 func Init_mysql_DSN(dsn string) {
 	TEMP_DB = NewMysqlDatabase(dsn)
 }
 
+// This function initializes a MySQL database connection using the provided parameters and stores it to [dbutil.TEMP_DB] .
+// It formats the connection string based on the provided host, user, password, database name, and port.
 func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int) {
 	if dbPort != 0 {
 		dbHost = fmt.Sprintf("%s:%d", dbHost, dbPort)

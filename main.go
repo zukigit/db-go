@@ -14,7 +14,6 @@ func main() {
 	DBNAME := "zabbix"
 	DBPORT := 3306
 
-	// need to call only once util you want to change database config
 	dbutil.Init_mysql(
 		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
 

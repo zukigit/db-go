@@ -10,7 +10,7 @@ import (
 var TEMP_DB Database
 
 // This function initializes a MySQL database connection using the provided data source name and stores it temporarily.
-// You can read here
+// You can read how to generate DataSourceName [here]: https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN
 func Init_mysql_DSN(dsn string) {
 	TEMP_DB = NewMysqlDatabase(dsn)
 }

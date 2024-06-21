@@ -36,6 +36,7 @@ func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, db
 }
 
 // This function establishes a connection to the database and returns [dbutil.Database].
+// With that [dbutil.Database], You can use [dbutil.Database.Select] or any other utility functions.
 // It utilizes [dbutil.TEMP_DB] that must be initialized by calling [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] first.
 func Connect() (Database, error) {
 	if TEMP_DB == nil {

@@ -6,9 +6,8 @@ import (
 )
 
 type MysqlDatabase struct {
-	db             *sql.DB
-	isInTranx      *bool
-	dataSourceName string
+	db        *sql.DB
+	isInTranx *bool
 
 	// the maximum number of connections in the pool
 	// maxConnections int
@@ -20,8 +19,18 @@ type MysqlDatabase struct {
 	// mutex *sync.Mutex
 }
 
-func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
-	return &MysqlDatabase{dataSourceName: dataSourceName}
+func NewMysqlDatabase(dataSourceName string) (*MysqlDatabase, error) {
+	notInTranx := false
+
+	sqlDB, err := sql.Open("mysql", dataSourceName)
+	if err != nil {
+		return nil, err
+	}
+
+	return &MysqlDatabase{
+		db:        sqlDB,
+		isInTranx: &notInTranx,
+	}, nil
 }
 
 func (mysql *MysqlDatabase) Ping() error {
@@ -33,28 +42,12 @@ func (mysql *MysqlDatabase) Ping() error {
 	return nil
 }
 
-func (mysql *MysqlDatabase) Connect() (Database, error) {
-	notInTranx := false
-	sqlDB, err := sql.Open("mysql", mysql.dataSourceName)
-	if err != nil {
-		return nil, err
+func (mysql *MysqlDatabase) Connect() (database Database, err error) {
+	if err = mysql.Ping(); err != nil {
+		return
 	}
-	if err := sqlDB.Ping(); err != nil {
-		return nil, err
-	}
-
-	// check it's for the first time or not. If it is first time, returns new object
-	if mysql.db == nil {
-		return &MysqlDatabase{
-			db:             sqlDB,
-			isInTranx:      &notInTranx,
-			dataSourceName: mysql.dataSourceName,
-		}, nil
-	}
-
-	mysql.db = sqlDB
-	mysql.isInTranx = &notInTranx
-	return nil, nil
+	database = mysql
+	return
 }
 
 func (mysql *MysqlDatabase) Close() error {

@@ -38,7 +38,7 @@ import (
 
 func main() {
 
-DBHOST := "" // Default: localhost
+    DBHOST := "" // Default: localhost
 	DBUSER := "database_user"
 	DBPASSWORD := "database_password"
 	DBNAME := "database_name"

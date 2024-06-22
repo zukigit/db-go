@@ -43,7 +43,7 @@ func main() {
 	DBPASSWORD := "database_password"
 	DBNAME := "database_name"
 	DBPORT := 3306 // Default for mysql 3306
-    MAXCON := 2 //Set it to zero if you don't want to use connection pool.
+    MAXCON := 2 // Max Con Count.
 
     // Init mysql database. Don't need to call again.
 	dbutil.Init_mysql(

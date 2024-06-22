@@ -74,8 +74,7 @@ func doTest() {
     // Take database connection
     db, err := dbutil.GetCon()
     if err != nil {
-        fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
-        return
+        log.Fatal(err)
     }
 
     // Transaction begins

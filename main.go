@@ -15,7 +15,7 @@ func main() {
 	DBPORT := 3306
 
 	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 2)
 
 	db, err := dbutil.Connect()
 	if err != nil {

@@ -10,7 +10,7 @@ type MysqlDatabase struct {
 	isInTranx *bool
 	dns       string
 	// the maximum number of connections in the pool
-	// maxConnections int
+	maxConnections int
 
 	// the current number of connections in the pool
 	// numConnections int

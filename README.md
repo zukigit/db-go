@@ -23,3 +23,39 @@ Importing the Package
 ```go
 import dbutil "github.com/zukigit/db-go/dbutil"
 ```
+
+## Connecting to a Database
+
+Here's an example of how to establish a connection to a database:
+
+```go
+package main
+
+import (
+    "fmt"
+    dbutil "github.com/zukigit/db-go/dbutil"
+)
+
+func main() {
+
+	DBHOST := "" // Default: localhost
+	DBUSER := "database_user"
+	DBPASSWORD := "database_password"
+	DBNAME := "database_name"
+	DBPORT := 3306 // Default for mysql 3306
+    MAXCONNECTIONS := 2 // It's for database connection pooling. Set it to zero if you don't want to use.
+
+    // This function needs to be called only once unless you want to change the database configuration again.
+	dbutil.Init_mysql(
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONNECTIONS)
+    
+    // Take database connection
+    db, err := dbutil.GetConnection()
+	if err != nil {
+        log.Fatal(err)
+	}
+
+    // Will release taken connection. You don't need to call it if you don't use database connection pooling
+    defer db.ReleaseCon()
+}
+```

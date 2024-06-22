@@ -14,6 +14,7 @@ To install `db-go`, use the following command:
 
 ```bash
 go get github.com/zukigit/db-go
+```
 
 ## Usage
 
@@ -21,3 +22,4 @@ Importing the Package
 
 ```go
 import dbutil "github.com/zukigit/db-go/dbutil"
+```

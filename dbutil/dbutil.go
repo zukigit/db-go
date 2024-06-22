@@ -9,8 +9,11 @@ import (
 // Stores Database object.
 var TEMP_DB Database
 
-// This function needs to be called only once unless you want to change the database configuration again.
-// This function stores a MySQL DataSourceName using the provided DataSourceName temporarily.
+// It initializes MysqlDatabase using the provided dataSourceName and stores it.
+//
+//	maxConCount (int): The maximum number of connections to allow in the connection pool. If set to 0, it allows for an unlimited number of connections.
+//	dataSourceName (string): The DSN string that contains the information required to connect to the MySQL database.
+//
 // You can read how to generate DataSourceName here: [https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN].
 func Init_mysql_DSN(dataSourceName string, maxConCount int) {
 	mysqlDB := NewMysqlDatabase(dataSourceName)
@@ -18,9 +21,11 @@ func Init_mysql_DSN(dataSourceName string, maxConCount int) {
 	TEMP_DB = mysqlDB
 }
 
+// It initializes MysqlDatabase using the provided parameters and stores it.
+//
+//	maxConCount (int): The maximum number of connections to allow in the connection pool. If set to 0, it allows for an unlimited number of connections.
+//
 // This function needs to be called only once unless you want to change the database configuration again.
-// It initializes a MySQL DataSourceName using the provided parameters and stores it temporarily.
-// The DataSourceName is formatted based on the given host, user, password, database name, and port.
 // If you want to use your own DataSourceName, you can use [dbutil.Init_mysql_DSN] instead.
 func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, dbPort int, maxConCount int) {
 	if dbPort != 0 {
@@ -39,8 +44,7 @@ func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, db
 }
 
 // This function establishes a connection to the database and returns [dbutil.Database].
-// With that [dbutil.Database], You can use [dbutil.Select] or any other utility functions.
-// [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] must be called first to use this function.
+// To use this function, [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] must be called first.
 func GetConnection() (Database, error) {
 	if TEMP_DB == nil {
 		return nil, Err_DB_NOT_INIT

@@ -171,3 +171,16 @@ func main() {
 
     dbutil.Close()
 }
+```
+
+## License
+
+This project is licensed under the MPL-2.0 License. See the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue on GitHub.
+
+## Issues
+
+For any issues, please open an issue on GitHub: db-go Issues

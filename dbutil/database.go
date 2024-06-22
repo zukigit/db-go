@@ -2,6 +2,7 @@ package dbutil
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type Database interface {
@@ -71,7 +72,12 @@ func getCon(database Database) error {
 		database.mutex.Lock()
 		defer database.mutex.Unlock()
 
-		if database.maxConnections < database.numConnections {
+		if database.maxConnections == 0 {
+			return nil
+		}
+
+		if database.maxConnections <= database.numConnections {
+			fmt.Println(database.maxConnections, database.numConnections)
 			return Err_CON_NOT_AVALIABLE
 		}
 		database.numConnections++

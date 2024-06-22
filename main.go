@@ -8,6 +8,7 @@ import (
 
 func main() {
 	var err error
+
 	DBHOST := ""
 	DBUSER := "root"
 	DBPASSWORD := "zabbix"
@@ -15,15 +16,30 @@ func main() {
 	DBPORT := 3306
 
 	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 2)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 0)
 
 	db, err := dbutil.Connect()
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 	db.Close()
-	db.Connect()
-	db.Connect()
+
+	err = db.Connect()
+	if err != nil {
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	}
+	err = db.Connect()
+	if err != nil {
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	}
+	err = db.Connect()
+	if err != nil {
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	}
+	err = db.Connect()
+	if err != nil {
+		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+	}
 
 	if err = db.Begin(); err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())

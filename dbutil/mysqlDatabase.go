@@ -3,35 +3,27 @@ package dbutil
 import (
 	"database/sql"
 	"fmt"
+	"sync"
 )
 
 type MysqlDatabase struct {
 	db        *sql.DB
 	isInTranx *bool
 	dns       string
-	// the maximum number of connections in the pool
+
 	maxConnections int
-
-	// the current number of connections in the pool
-	// numConnections int
-
-	// the mutex to synchronize access to the connection pool
-	// mutex *sync.Mutex
+	numConnections int
+	mutex          *sync.Mutex
 }
 
-func NewMysqlDatabase(dataSourceName string) (*MysqlDatabase, error) {
+func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
 	notInTranx := false
 
-	sqlDB, err := sql.Open("mysql", dataSourceName)
-	if err != nil {
-		return nil, err
-	}
-
 	return &MysqlDatabase{
-		db:        sqlDB,
 		isInTranx: &notInTranx,
 		dns:       dataSourceName,
-	}, nil
+		mutex:     &sync.Mutex{},
+	}
 }
 
 func (mysql *MysqlDatabase) Ping() error {
@@ -43,23 +35,26 @@ func (mysql *MysqlDatabase) Ping() error {
 	return nil
 }
 
-func (mysql *MysqlDatabase) Connect() (database Database, err error) {
-	if mysql.db != nil {
-		if mysql.db, err = sql.Open("mysql", mysql.dns); err != nil {
-			return
-		}
+func (mysql *MysqlDatabase) Connect() error {
+	var err error
+
+	if err = getCon(mysql); err != nil {
+		return err
 	}
-	if err = mysql.Ping(); err != nil {
-		return
+
+	mysql.db, err = sql.Open("mysql", mysql.dns)
+	if err != nil {
+		return err
 	}
-	database = mysql
-	return
+
+	return mysql.db.Ping()
 }
 
 func (mysql *MysqlDatabase) Close() error {
 	if mysql.db == nil {
 		return Err_DB_NOT_CONNECTED
 	}
+
 	return mysql.db.Close()
 }
 

@@ -21,7 +21,8 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
-
+	db.Close()
+	db.Connect()
 	db.Connect()
 
 	if err = db.Begin(); err != nil {
@@ -40,19 +41,19 @@ func main() {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
 	// }
 
-	if err = db.Rollback(); err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-	}
+	// if err = db.Rollback(); err != nil {
+	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
+	// }
 
-	rows, err := db.Select("select hostid from hosts where hostid = %d", 7073)
-	if err != nil {
-		fmt.Printf("Error in select. Err: %s\n", err.Error())
-	}
-	for _, row := range rows {
-		fmt.Println(row)
-	}
+	// rows, err := db.Select("select hostid from hosts where hostid = %d", 7073)
+	// if err != nil {
+	// 	fmt.Printf("Error in select. Err: %s\n", err.Error())
+	// }
+	// for _, row := range rows {
+	// 	fmt.Println(row)
+	// }
 
-	if err = db.Close(); err != nil {
-		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
-	}
+	// if err = db.Close(); err != nil {
+	// 	fmt.Printf("Error in closing Database. (%s)\n", err.Error())
+	// }
 }

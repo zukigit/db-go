@@ -89,5 +89,6 @@ func doTest() {
     if err = db.Commit(); err != nil {
         log.Fatal(err)
     }
+}
 
 ```

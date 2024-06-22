@@ -43,11 +43,11 @@ func main() {
     DBPASSWORD := "database_password"
     DBNAME := "database_name"
     DBPORT := 3306 // Default for mysql 3306
-    MAXCON := 2 // Max Connections for connection pool. Set zero if you dun wanna use it
+    MAXCONS := 2 // Max Connections for connection pool. Set zero if you dun wanna use it
 
     // Init mysql database. Don't need to call again.
     dbutil.Init_mysql(
-        DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONNECTIONS)
+        DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONS)
     
     // Take database connection
     db, err := dbutil.GetConnection()

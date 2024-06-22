@@ -39,15 +39,15 @@ import (
 func main() {
 
     DBHOST := "" // Default: localhost
-	DBUSER := "database_user"
-	DBPASSWORD := "database_password"
-	DBNAME := "database_name"
-	DBPORT := 3306 // Default for mysql 3306
+    DBUSER := "database_user"
+    DBPASSWORD := "database_password"
+    DBNAME := "database_name"
+    DBPORT := 3306 // Default for mysql 3306
     MAXCON := 2 // Max Con Count.
 
     // Init mysql database. Don't need to call again.
-	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONNECTIONS)
+    dbutil.Init_mysql(
+        DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONNECTIONS)
     
     // Take database connection
     db, err := dbutil.GetConnection()

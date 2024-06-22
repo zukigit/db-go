@@ -163,11 +163,11 @@ func main() {
         DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONS)
 
     go doTest()
-	time.Sleep(1 * time.Second)
-	go doTest()
-	time.Sleep(1 * time.Second)
-	go doTest()
-	time.Sleep(1 * time.Second)
+    time.Sleep(1 * time.Second)
+    go doTest()
+    time.Sleep(1 * time.Second)
+    go doTest()
+    time.Sleep(1 * time.Second)
 
 	dbutil.Close()
 }

@@ -35,20 +35,26 @@ func (mysql *MysqlDatabase) Ping() error {
 
 func (mysql *MysqlDatabase) Connect() (Database, error) {
 	notInTranx := false
-
 	sqlDB, err := sql.Open("mysql", mysql.dataSourceName)
 	if err != nil {
 		return nil, err
 	}
-
 	if err := sqlDB.Ping(); err != nil {
 		return nil, err
 	}
 
-	return &MysqlDatabase{
-		db:        sqlDB,
-		isInTranx: &notInTranx,
-	}, nil
+	// check it's for the first time or not. If it is first time, returns new object
+	if mysql.db == nil {
+		return &MysqlDatabase{
+			db:             sqlDB,
+			isInTranx:      &notInTranx,
+			dataSourceName: mysql.dataSourceName,
+		}, nil
+	}
+
+	mysql.db = sqlDB
+	mysql.isInTranx = &notInTranx
+	return nil, nil
 }
 
 func (mysql *MysqlDatabase) Close() error {

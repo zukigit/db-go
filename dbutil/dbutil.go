@@ -45,7 +45,7 @@ func Init_mysql(dbHost string, dbUser string, dbPasswd string, dbName string, db
 
 // This function establishes a connection to the database and returns [dbutil.Database].
 // To use this function, [dbutil.Init_mysql_DSN] or [dbutil.Init_mysql] must be called first.
-func GetConnection() (Database, error) {
+func GetCon() (Database, error) {
 	if TEMP_DB == nil {
 		return nil, Err_DB_NOT_INIT
 	}

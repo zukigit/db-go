@@ -50,7 +50,7 @@ func main() {
         DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONS)
     
     // Take database connection
-    db, err := dbutil.GetConnection()
+    db, err := dbutil.GetCon()
     if err != nil {
         log.Fatal(err)
     }

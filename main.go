@@ -10,7 +10,7 @@ import (
 func doTest() {
 	var err error
 
-	db, err := dbutil.GetConnection()
+	db, err := dbutil.GetCon()
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 		return

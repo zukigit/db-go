@@ -50,13 +50,13 @@ func (mysql *MysqlDatabase) Connect() error {
 	return mysql.db.Ping()
 }
 
-func (mysql *MysqlDatabase) Close() error {
-	if mysql.db == nil {
-		return Err_DB_NOT_CONNECTED
-	}
+// func (mysql *MysqlDatabase) Close() error {
+// 	if mysql.db == nil {
+// 		return Err_DB_NOT_CONNECTED
+// 	}
 
-	return mysql.db.Close()
-}
+// 	return mysql.db.Close()
+// }
 
 func (mysql *MysqlDatabase) Select(unfmt string, arg ...any) ([][]string, error) {
 	if mysql.db == nil {
@@ -110,4 +110,8 @@ func (mysql *MysqlDatabase) Rollback() error {
 	*mysql.isInTranx = false
 
 	return nil
+}
+
+func (mysql *MysqlDatabase) ReleaseCon() {
+	releaseCon(mysql)
 }

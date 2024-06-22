@@ -10,7 +10,7 @@ import (
 func doTest() {
 	var err error
 
-	db, err := dbutil.Connect()
+	db, err := dbutil.GetConnection()
 	if err != nil {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 		return
@@ -49,10 +49,8 @@ func doTest() {
 		fmt.Println(row)
 	}
 
-	if err = db.Close(); err != nil {
-		fmt.Printf("Error in closing Database. (%s)\n", err.Error())
-		return
-	}
+	fmt.Println("task succeeded!!!!")
+	db.ReleaseCon()
 }
 
 func main() {
@@ -64,11 +62,14 @@ func main() {
 	DBPORT := 3306
 
 	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 2)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 1)
 
 	go doTest()
+	time.Sleep(1 * time.Second)
 	go doTest()
+	time.Sleep(1 * time.Second)
 	go doTest()
+	time.Sleep(1 * time.Second)
 
-	time.Sleep(10 * time.Second)
+	dbutil.Close()
 }

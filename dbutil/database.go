@@ -12,7 +12,7 @@ type Database interface {
 	Begin() error
 	Commit() error
 	Rollback() error
-	Close() error
+	ReleaseCon()
 }
 
 func dbSelect(query string, db *sql.DB) ([][]string, error) {
@@ -79,6 +79,26 @@ func getCon(database Database) error {
 			return Err_CON_NOT_AVALIABLE
 		}
 		database.numConnections++
+	}
+	return nil
+}
+
+func releaseCon(database Database) {
+	switch database := database.(type) {
+	case *MysqlDatabase:
+		database.mutex.Lock()
+		defer database.mutex.Unlock()
+
+		if database.numConnections > 0 {
+			database.numConnections--
+		}
+	}
+}
+
+func close(database Database) error {
+	switch database := database.(type) {
+	case *MysqlDatabase:
+		return database.db.Close()
 	}
 	return nil
 }

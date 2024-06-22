@@ -169,5 +169,5 @@ func main() {
     go doTest()
     time.Sleep(1 * time.Second)
 
-	dbutil.Close()
+    dbutil.Close()
 }

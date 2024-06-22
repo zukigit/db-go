@@ -8,7 +8,7 @@ import (
 type MysqlDatabase struct {
 	db        *sql.DB
 	isInTranx *bool
-
+	dns       string
 	// the maximum number of connections in the pool
 	// maxConnections int
 
@@ -30,6 +30,7 @@ func NewMysqlDatabase(dataSourceName string) (*MysqlDatabase, error) {
 	return &MysqlDatabase{
 		db:        sqlDB,
 		isInTranx: &notInTranx,
+		dns:       dataSourceName,
 	}, nil
 }
 
@@ -43,6 +44,11 @@ func (mysql *MysqlDatabase) Ping() error {
 }
 
 func (mysql *MysqlDatabase) Connect() (database Database, err error) {
+	if mysql.db != nil {
+		if mysql.db, err = sql.Open("mysql", mysql.dns); err != nil {
+			return
+		}
+	}
 	if err = mysql.Ping(); err != nil {
 		return
 	}

@@ -22,12 +22,14 @@ func main() {
 		fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
 	}
 
+	db.Connect()
+
 	if err = db.Begin(); err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	}
 
 	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
-		7073, "")
+		7074, "")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 	} else {

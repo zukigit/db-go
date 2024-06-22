@@ -55,7 +55,7 @@ func main() {
         log.Fatal(err)
     }
 
-    // Will release taken connection.
+    // Will release a taken connection.
     defer db.ReleaseCon()
 }
 ```

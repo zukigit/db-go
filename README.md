@@ -51,9 +51,9 @@ func main() {
     
     // Take database connection
     db, err := dbutil.GetConnection()
-	if err != nil {
+    if err != nil {
         log.Fatal(err)
-	}
+    }
 
     // Will release taken connection.
     defer db.ReleaseCon()

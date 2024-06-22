@@ -175,7 +175,7 @@ func main() {
 
 ## License
 
-This project is licensed under the MPL-2.0 License. See the LICENSE file for details.
+This project is licensed under the MPL-2.0 License. See the [LICENSE](https://github.com/zukigit/db-go?tab=MPL-2.0-1-ov-file) file for details.
 
 ## Contributing
 
@@ -183,4 +183,4 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## Issues
 
-For any issues, please open an issue on GitHub: db-go Issues
+For any issues, please open an issue on GitHub: [db-go Issues](https://github.com/zukigit/db-go/issues)

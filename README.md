@@ -59,3 +59,35 @@ func main() {
     defer db.ReleaseCon()
 }
 ```
+
+## Performing a Transaction
+
+```go
+package main
+
+import (
+    "fmt"
+    dbutil "github.com/zukigit/db-go/dbutil"
+)
+
+func doTest() {
+    // Take database connection
+    db, err := dbutil.GetCon()
+    if err != nil {
+        fmt.Printf("Error in connecting Database. Err: %s\n", err.Error())
+        return
+    }
+
+    // Transaction begins
+    if err = db.Begin(); err != nil {
+        log.Fatal(err)
+    }
+
+    // Your transactional operations here
+
+    // Commit Transaction
+    if err = db.Commit(); err != nil {
+        log.Fatal(err)
+    }
+
+```

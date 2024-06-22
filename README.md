@@ -43,9 +43,9 @@ func main() {
 	DBPASSWORD := "database_password"
 	DBNAME := "database_name"
 	DBPORT := 3306 // Default for mysql 3306
-    MAXCONNECTIONS := 2 // It's for database connection pooling. Set it to zero if you don't want to use.
+    MAXCONNECTIONS := 2 //Set it to zero if you don't want to use connection pool.
 
-    // This function needs to be called only once unless you want to change the database configuration again.
+    // Init mysql database. Don't need to call again.
 	dbutil.Init_mysql(
 		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, MAXCONNECTIONS)
     
@@ -55,7 +55,7 @@ func main() {
         log.Fatal(err)
 	}
 
-    // Will release taken connection. You don't need to call it if you don't use database connection pooling
+    // Will release taken connection.
     defer db.ReleaseCon()
 }
 ```

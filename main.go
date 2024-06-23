@@ -62,14 +62,16 @@ func main() {
 	DBPORT := 3306
 
 	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 1)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 0)
 
 	go doTest()
-	time.Sleep(1 * time.Second)
 	go doTest()
-	time.Sleep(1 * time.Second)
 	go doTest()
-	time.Sleep(1 * time.Second)
+	go doTest()
+	go doTest()
+	go doTest()
+
+	time.Sleep(6 * time.Second)
 
 	dbutil.Close()
 }

@@ -1,6 +1,3 @@
-// Package dbutil provides database utility functions.
-//
-// More detailed usage instructions can be found in the README.md file.
 package dbutil
 
 import (

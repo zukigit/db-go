@@ -2,12 +2,17 @@ package dbutil
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/go-sql-driver/mysql"
 )
 
 // Stores Database object.
 var TEMP_DB Database
+
+var MAX_CONS int
+var CURRENT_CONS int
+var MUTEX *sync.Mutex
 
 // It initializes MysqlDatabase using the provided dataSourceName and stores it.
 //
@@ -17,8 +22,9 @@ var TEMP_DB Database
 // You can read how to generate DataSourceName here: [https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN].
 func Init_mysql_DSN(dataSourceName string, maxConCount int) {
 	mysqlDB := NewMysqlDatabase(dataSourceName)
-	mysqlDB.maxConnections = maxConCount
+	MAX_CONS = maxConCount
 	TEMP_DB = mysqlDB
+	MUTEX = &sync.Mutex{}
 }
 
 // It initializes MysqlDatabase using the provided parameters and stores it.
@@ -50,7 +56,7 @@ func GetCon() (Database, error) {
 		return nil, Err_DB_NOT_INIT
 	}
 
-	return TEMP_DB, TEMP_DB.Connect()
+	return TEMP_DB.Connect()
 }
 
 func Close() error {

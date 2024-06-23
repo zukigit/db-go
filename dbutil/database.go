@@ -5,7 +5,7 @@ import (
 )
 
 type Database interface {
-	Connect() error
+	Connect() (Database, error)
 	Ping() error
 	Select(unfmt string, arg ...any) ([][]string, error)
 	Execute(unfmt string, arg ...any) (int64, error)
@@ -65,33 +65,27 @@ func dbExecute(query string, db *sql.DB) (int64, error) {
 	return affected_rows, err
 }
 
-func getCon(database Database) error {
-	switch database := database.(type) {
-	case *MysqlDatabase:
-		database.mutex.Lock()
-		defer database.mutex.Unlock()
+func getCon() error {
+	MUTEX.Lock()
+	defer MUTEX.Unlock()
 
-		if database.maxConnections == 0 {
-			return nil
-		}
-
-		if database.maxConnections <= database.numConnections {
-			return Err_CON_NOT_AVALIABLE
-		}
-		database.numConnections++
+	if MAX_CONS == 0 {
+		return nil
 	}
+
+	if MAX_CONS <= CURRENT_CONS {
+		return Err_CON_NOT_AVALIABLE
+	}
+	CURRENT_CONS++
 	return nil
 }
 
-func releaseCon(database Database) {
-	switch database := database.(type) {
-	case *MysqlDatabase:
-		database.mutex.Lock()
-		defer database.mutex.Unlock()
+func releaseCon() {
+	MUTEX.Lock()
+	defer MUTEX.Unlock()
 
-		if database.numConnections > 0 {
-			database.numConnections--
-		}
+	if CURRENT_CONS > 0 {
+		CURRENT_CONS--
 	}
 }
 

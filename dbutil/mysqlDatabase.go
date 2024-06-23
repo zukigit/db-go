@@ -3,26 +3,17 @@ package dbutil
 import (
 	"database/sql"
 	"fmt"
-	"sync"
 )
 
 type MysqlDatabase struct {
 	db        *sql.DB
 	isInTranx *bool
 	dns       string
-
-	maxConnections int
-	numConnections int
-	mutex          *sync.Mutex
 }
 
 func NewMysqlDatabase(dataSourceName string) *MysqlDatabase {
-	notInTranx := false
-
 	return &MysqlDatabase{
-		isInTranx: &notInTranx,
-		dns:       dataSourceName,
-		mutex:     &sync.Mutex{},
+		dns: dataSourceName,
 	}
 }
 
@@ -35,19 +26,28 @@ func (mysql *MysqlDatabase) Ping() error {
 	return nil
 }
 
-func (mysql *MysqlDatabase) Connect() error {
+func (mysql *MysqlDatabase) Connect() (Database, error) {
 	var err error
+	notInTranx := false
 
-	if err = getCon(mysql); err != nil {
-		return err
+	if err = getCon(); err != nil {
+		return nil, err
 	}
 
 	mysql.db, err = sql.Open("mysql", mysql.dns)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return mysql.db.Ping()
+	if err = mysql.db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return &MysqlDatabase{
+		db:        mysql.db,
+		isInTranx: &notInTranx,
+		dns:       mysql.dns,
+	}, nil
 }
 
 // func (mysql *MysqlDatabase) Close() error {
@@ -113,5 +113,5 @@ func (mysql *MysqlDatabase) Rollback() error {
 }
 
 func (mysql *MysqlDatabase) ReleaseCon() {
-	releaseCon(mysql)
+	releaseCon()
 }

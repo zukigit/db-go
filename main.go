@@ -16,13 +16,14 @@ func doTest() {
 		return
 	}
 
+	db.Execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;")
 	if err = db.Begin(); err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 		return
 	}
 
 	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
-		7075, "")
+		7076, "")
 	if err != nil {
 		fmt.Printf("Query get failed, error: %s\n", err.Error())
 		return

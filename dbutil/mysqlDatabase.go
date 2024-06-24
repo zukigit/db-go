@@ -113,5 +113,7 @@ func (mysql *MysqlDatabase) Rollback() error {
 }
 
 func (mysql *MysqlDatabase) ReleaseCon() {
+	mysql.db.Close()
 	releaseCon()
+	*mysql.isInTranx = false
 }

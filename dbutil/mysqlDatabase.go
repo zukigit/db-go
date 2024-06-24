@@ -34,17 +34,17 @@ func (mysql *MysqlDatabase) Connect() (Database, error) {
 		return nil, err
 	}
 
-	mysql.db, err = sql.Open("mysql", mysql.dns)
+	db_ptr, err := sql.Open("mysql", mysql.dns)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = mysql.db.Ping(); err != nil {
+	if err = db_ptr.Ping(); err != nil {
 		return nil, err
 	}
 
 	return &MysqlDatabase{
-		db:        mysql.db,
+		db:        db_ptr,
 		isInTranx: &notInTranx,
 		dns:       mysql.dns,
 	}, nil

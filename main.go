@@ -22,14 +22,14 @@ func doTest() {
 		return
 	}
 
-	effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
-		7076, "")
-	if err != nil {
-		fmt.Printf("Query get failed, error: %s\n", err.Error())
-		return
-	} else {
-		fmt.Println("effected_rows:", effected_rows)
-	}
+	// effected_rows, err := db.Execute("insert into hosts (hostid, description) values(%d, '%s');",
+	// 	7076, "")
+	// if err != nil {
+	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
+	// 	return
+	// } else {
+	// 	fmt.Println("effected_rows:", effected_rows)
+	// }
 
 	// if err = db.Commit(); err != nil {
 	// 	fmt.Printf("Query get failed, error: %s\n", err.Error())
@@ -63,7 +63,7 @@ func main() {
 	DBPORT := 3306
 
 	dbutil.Init_mysql(
-		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 0)
+		DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, 1)
 
 	go doTest()
 	go doTest()

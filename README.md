@@ -173,7 +173,7 @@ func main() {
 
 ## Golang Doc
 
-For more source code documentations. See the [pkg.go.dev/db-go](https://pkg.go.dev/github.com/zukigit/db-go@v1.0.1-0.20240625151215-1851190c7f58/dbutil) file for details.
+For more source code documentations. See the [pkg.go.dev/db-go](https://pkg.go.dev/github.com/zukigit/db-go@v1.0.1-0.20240625151215-1851190c7f58/dbutil) for details.
 
 ## License
 

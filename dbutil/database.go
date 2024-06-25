@@ -4,6 +4,7 @@ import (
 	"database/sql"
 )
 
+// It's the main interface that allows you to use various functions with an object obtained by calling [dbutil.GetCon]
 type Database interface {
 	Connect() (Database, error)
 	Ping() error

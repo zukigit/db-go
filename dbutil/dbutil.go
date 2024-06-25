@@ -7,7 +7,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-// Stores Database object.
+// Stores Database object temporarily.
 var TEMP_DB Database
 
 var MAX_CONS int

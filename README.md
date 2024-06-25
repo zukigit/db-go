@@ -37,7 +37,6 @@ import (
 )
 
 func main() {
-
     DBHOST := "" // Default: localhost
     DBUSER := "database_user"
     DBPASSWORD := "database_password"
@@ -150,7 +149,6 @@ func doTest() {
 }
 
 func main() {
-
     DBHOST := "" // Default: localhost
     DBUSER := "database_user"
     DBPASSWORD := "database_password"

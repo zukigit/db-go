@@ -13,7 +13,7 @@
 To install `db-go`, use the following command:
 
 ```bash
-go get github.com/zukigit/db-go
+go get github.com/zukigit/db-go@latest
 ```
 
 ## Usage

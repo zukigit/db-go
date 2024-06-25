@@ -171,6 +171,10 @@ func main() {
 }
 ```
 
+## Golang Doc
+
+For more source code documentations. See the [pkg.go.dev/db-go](https://pkg.go.dev/github.com/zukigit/db-go@v1.0.1-0.20240625151215-1851190c7f58/dbutil) file for details.
+
 ## License
 
 This project is licensed under the MPL-2.0 License. See the [LICENSE](https://github.com/zukigit/db-go?tab=MPL-2.0-1-ov-file) file for details.

@@ -58,7 +58,3 @@ func GetCon() (Database, error) {
 
 	return TEMP_DB.Connect()
 }
-
-func Close() error {
-	return close(TEMP_DB)
-}

@@ -88,14 +88,3 @@ func releaseCon() {
 		CURRENT_CONS--
 	}
 }
-
-func close(database Database) error {
-	switch database := database.(type) {
-	case *MysqlDatabase:
-		if database.db == nil {
-			return Err_DB_NOT_CONNECTED
-		}
-		return database.db.Close()
-	}
-	return nil
-}

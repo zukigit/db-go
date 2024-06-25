@@ -73,6 +73,4 @@ func main() {
 	go doTest()
 
 	time.Sleep(6 * time.Second)
-
-	dbutil.Close()
 }

@@ -16,8 +16,8 @@ var MUTEX *sync.Mutex
 
 // It initializes MysqlDatabase using the provided dataSourceName and stores it.
 //
-//	maxConCount (int): The maximum number of connections to allow in the connection pool. If set to 0, it allows for an unlimited number of connections.
 //	dataSourceName (string): The DSN string that contains the information required to connect to the MySQL database.
+//	maxConCount (int): The maximum number of connections to allow in the connection pool. If set to 0, it allows for an unlimited number of connections.
 //
 // You can read how to generate DataSourceName here: [https://pkg.go.dev/github.com/go-sql-driver/mysql@v1.8.0#Config.FormatDSN].
 func Init_mysql_DSN(dataSourceName string, maxConCount int) {
